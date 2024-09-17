@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.price">
+            <block class="Magento\Framework\View\Element\Template" name="custom_currencies" template="Perspective_SystemConfigExample::custom_price.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Perspective\SystemConfigExample\ViewModel\ProductPrice</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

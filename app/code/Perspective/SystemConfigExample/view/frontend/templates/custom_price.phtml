@@ -1,0 +1,31 @@
+<?php
+/** @var \Perspective\SystemConfigExample\ViewModel\ProductPrice $viewModel */
+$viewModel = $block->getViewModel();
+
+$productId = $viewModel->getProduct()->getId();
+
+$basePrice = $viewModel->getProductPrice($productId);
+
+$baseCurrencyCode = $viewModel->getBaseCurrencyCode();
+
+if ($viewModel->isSystemCurrenciesEnabled()) {
+    $convertedPrices = $viewModel->getSystemConvertedPrices($basePrice);
+    if (!empty($convertedPrices)) {
+        foreach ($convertedPrices as $currencyCode => $price) {
+            if ($baseCurrencyCode != $currencyCode) {
+                echo '<p>' . __('Price in ' . $currencyCode) . ': ' . $price . '</p>';
+            }
+        }
+    }
+}
+
+if ($viewModel->isUahEnabled()) {
+    $priceInUah = $viewModel->convertToUah($basePrice);
+    echo '<p>' . __('Price in UAH: ') . $priceInUah . '</p>';
+}
+
+if ($viewModel->isEuroEnabled()) {
+    $priceInEuro = $viewModel->convertToEuro($basePrice);
+    echo '<p>' . __('Price in Euro: ') . $priceInEuro . '</p>';
+}
+?>

@@ -1,0 +1,23 @@
+# Magento 2 directories
+/app/etc/env.php
+/var
+/vendor
+/pub/static
+/pub/media
+/generated
+/.idea
+/.vscode
+/.DS_Store
+
+# Logs and session files
+*.log
+*.session
+*.cache
+
+# Node and Composer dependencies
+node_modules/
+*.lock
+
+# Other
+/.composer
+/phpserver*

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="perspective" translate="label" sortOrder="1000">
+            <label>Perspective</label>
+        </tab>
+        <section id="perspective" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Perspective</label>
+            <tab>perspective</tab>
+            <resource>Perspective_SystemConfigExample::perspective</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Custom Currencies</label>
+                <field id="enabled" type="select" translate="label,comment,tooltip" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>perspective/general/enabled</config_path>
+                    <comment>Enable currencies module</comment>
+                    <tooltip>Enable currencies module</tooltip>
+                </field>
+                <field id="uah_enabled" type="select" translate="label,comment,tooltip" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>UAH</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>perspective/general/uah_enabled</config_path>
+                    <comment>Enable UAH</comment>
+                    <tooltip>Enable UAH</tooltip>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="uah_course" type="text" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>UAH Course</label>
+                    <validate>validate-number</validate>
+                    <config_path>perspective/general/uah_course</config_path>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="euro_enabled" type="select" translate="label,comment,tooltip" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>EURO</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>perspective/general/euro_enabled</config_path>
+                    <comment>Enable EURO</comment>
+                    <tooltip>Enable EURO</tooltip>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="euro_course" type="text" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>EURO Course</label>
+                    <validate>validate-number</validate>
+                    <config_path>perspective/general/euro_course</config_path>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+
+
+            <group id="system_currencies" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>System Currencies</label>
+                <field id="enabled" type="select" translate="label,comment,tooltip" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>perspective/system_currencies/enabled</config_path>
+                    <comment>Enable system currencies </comment>
+                    <tooltip>Enable system currencies </tooltip>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

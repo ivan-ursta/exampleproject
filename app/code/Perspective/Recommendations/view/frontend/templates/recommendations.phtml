@@ -1,0 +1,28 @@
+<?php
+$recommendedProducts = $block->getViewModel()->getRecommendedProducts();
+
+?>
+
+<?php if (!empty($recommendedProducts)): ?>
+    <h2>Вас може зацікавити</h2>
+    <div style="display: flex" class="recommended-products">
+        <?php foreach ($recommendedProducts as $product): ?>
+        <div>
+            <?php
+            $imageUrl = $block->getLayout()
+                ->createBlock('Magento\Catalog\Block\Product\ListProduct')
+                ->getImage($product, 'product_base_image')
+                ->getImageUrl();
+            ?>
+            <a href="<?= $product->getProductUrl(); ?>">
+                <img src="<?= $imageUrl; ?>" alt="<?= $product->getName(); ?>"/>
+            </a>
+            <p><?= $product->getName(); ?></p>
+            <p><?= $product->getSku(); ?></p>
+            <p><?= $block->escapeHtml($product->getPrice()); ?></p>
+        </div>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>Немає відповідних продуктів.</p>
+<?php endif; ?>

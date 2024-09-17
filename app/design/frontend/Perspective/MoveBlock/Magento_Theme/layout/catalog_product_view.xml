@@ -1,0 +1,16 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <!--       creating a custom container-->
+        <referenceContainer name="content">
+            <container name="custom.container" htmlTag="div" htmlClass="custom-container" before="product.info.media"/>
+        </referenceContainer>
+
+        <!--        move title-->
+        <move element="page.main.title" destination="custom.container" before="-" />
+
+        <!--        move SKU-->
+        <move element="product.info.stock.sku" destination="custom.container" after="-" />
+
+    </body>
+</page>

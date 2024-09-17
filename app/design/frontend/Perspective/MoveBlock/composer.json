@@ -1,0 +1,14 @@
+{
+    "name": "perspective/moveblock",
+    "description": "Custom theme based on Luma",
+    "type": "magento2-theme",
+    "require": {
+        "php": "~7.3.0||~7.4.0||~8.1.0",
+        "magento/theme-frontend-luma": "100.0.*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ]
+    }
+}
