@@ -378,6 +378,8 @@ return [
         'PayPal_BraintreeGiftCardAccount' => 1,
         'PayPal_BraintreeGiftWrapping' => 1,
         'PayPal_BraintreeGraphQl' => 1,
+        'Perspective_ClothingMaterial' => 1,
+        'Perspective_ColorAttribute' => 1,
         'Perspective_Recommendations' => 1,
         'Perspective_SystemConfigExample' => 1
     ]

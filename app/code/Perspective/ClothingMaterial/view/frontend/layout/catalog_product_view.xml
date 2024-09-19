@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.main">
+            <block name="Perspective_ClothingMaterial"
+                   template="Perspective_ClothingMaterial::relatedproduct.phtml"
+                   after="product.info.price"
+                   before="product.price.tier">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">
+                        Perspective\ClothingMaterial\ViewModel\RelatedModel
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
