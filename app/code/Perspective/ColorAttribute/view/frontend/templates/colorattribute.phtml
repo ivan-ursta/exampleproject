@@ -2,23 +2,23 @@
 /** @var \Perspective\CurrentProduct\Block\Template $block */
 /**@var \Perspective\CurrentProduct\ViewModel\AddEnableColorAttribute $viewModel*/
 
-$viewModel = $block->getViewModel();
-
-if ($currentProduct = $viewModel->getCurrentProduct()) {
-    echo $currentProduct->getName() . '<br />';
-    echo $currentProduct->getSku() . '<br />';
-    echo $currentProduct->getFinalPrice() . '<br />';
-    echo $currentProduct->getProductUrl() . '<br />';
-
-    echo "Значення атрибута My color ". $currentProduct->getData('my_color') . '<br />';
-
-    print_r ($currentProduct->getCategoryIds()) . '<br />';
-}
-// print current category data
-if ($currentCategory = $viewModel->getCurrentCategory()) {
-    echo $currentCategory->getName() . '<br />';
-    echo $currentCategory->getUrl() . '<br />';
-}
-
+//$viewModel = $block->getViewModel();
+//
+//if ($currentProduct = $viewModel->getCurrentProduct()) {
+//    echo $currentProduct->getName() . '<br />';
+//    echo $currentProduct->getSku() . '<br />';
+//    echo $currentProduct->getFinalPrice() . '<br />';
+//    echo $currentProduct->getProductUrl() . '<br />';
+//
+//    echo "Значення атрибута My color ". $currentProduct->getData('my_color') . '<br />';
+//
+//    print_r ($currentProduct->getCategoryIds()) . '<br />';
+//}
+//// print current category data
+//if ($currentCategory = $viewModel->getCurrentCategory()) {
+//    echo $currentCategory->getName() . '<br />';
+//    echo $currentCategory->getUrl() . '<br />';
+//}
+//
 
 ?>

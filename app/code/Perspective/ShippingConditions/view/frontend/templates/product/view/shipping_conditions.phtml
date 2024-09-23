@@ -1,0 +1,18 @@
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $viewModel \Vendor\ShippingConditions\ViewModel\Product\ShippingCondition */
+
+$viewModel = $block->getViewModel();
+
+if ($viewModel->isEnabled()):
+
+    $shippingConditionLabel = $viewModel->getShippingConditionLabel();
+
+    if ($shippingConditionLabel):
+        ?>
+        <div class="product-shipping-condition">
+            <strong><?= __('Shipping Condition:') ?></strong>
+            <span><?= $block->escapeHtml($shippingConditionLabel) ?></span>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>

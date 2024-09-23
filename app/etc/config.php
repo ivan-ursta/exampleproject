@@ -381,6 +381,7 @@ return [
         'Perspective_ClothingMaterial' => 1,
         'Perspective_ColorAttribute' => 1,
         'Perspective_Recommendations' => 1,
+        'Perspective_ShippingConditions' => 1,
         'Perspective_SystemConfigExample' => 1
     ]
 ];

@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php
+$viewModel = $block->getViewModelShipping();
+$shippingData = $viewModel->getShippingFeeInCart();
+
+/**
+ * Shopping cart totals template
+ * @var $block \Magento\Checkout\Block\Cart\Totals
+ */
+?>
+
+<?php if ($viewModel->isEnabled()): ?>
+    <div id="cart-totals" class="cart-totals" data-bind="scope:'block-totals'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+
+        <?php if ($shippingData): ?>
+            <div class="shipping-condition">
+                <strong><?= __('Shipping Condition: ') ?></strong>
+                <?= $block->escapeHtml($shippingData[0]['label']) ?>
+                <br>
+                <strong><?= __('Additional Shipping Fee: ') ?></strong>
+                <?= $block->escapeHtml($shippingData[0]['fee']) ?>
+            </div>
+        <?php endif; ?>
+
+        <script type="text/x-magento-init">
+            {
+                "#cart-totals": {
+                    "Magento_Ui/js/core/app": <?= /* @noEscape */
+            $block->getJsLayout() ?>
+            }
+        }
+        </script>
+    </div>
+<?php endif; ?>

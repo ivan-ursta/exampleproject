@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.totals" template="Perspective_ShippingConditions::cart/totals.phtml">
+            <arguments>
+                <argument name="view_model_shipping" xsi:type="object">
+                    Perspective\ShippingConditions\ViewModel\ShippingView
+                </argument>
+                <argument name="title" xsi:type="string" translate="true">Shipping Conditions Fee</argument>
+                <argument name="code" xsi:type="string">shipping_conditions_fee</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
