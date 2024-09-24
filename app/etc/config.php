@@ -380,6 +380,7 @@ return [
         'PayPal_BraintreeGraphQl' => 1,
         'Perspective_ClothingMaterial' => 1,
         'Perspective_ColorAttribute' => 1,
+        'Perspective_CreateSimpleProduct' => 1,
         'Perspective_DemoPlugin' => 1,
         'Perspective_Recommendations' => 1,
         'Perspective_ShippingConditions' => 1,

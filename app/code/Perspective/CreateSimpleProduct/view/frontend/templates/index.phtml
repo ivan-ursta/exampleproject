@@ -1,0 +1,9 @@
+<?php
+//$_product = $block->CrPr();
+
+$id = '2041';
+
+$_product = $block->getProductById($id);
+ echo $_product->getName().'<br>'.$_product->getSku().'<br>'.$_product->getEntityId();
+
+?>
