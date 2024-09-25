@@ -384,6 +384,7 @@ return [
         'Perspective_ColorAttribute' => 1,
         'Perspective_CreateSimpleProduct' => 1,
         'Perspective_DemoPlugin' => 1,
+        'Perspective_IncreaseCurrencyRates' => 1,
         'Perspective_Recommendations' => 1,
         'Perspective_ShippingConditions' => 1,
         'Perspective_SystemConfigExample' => 1
