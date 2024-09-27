@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <type name="Magento\InventorySalesFrontendUi\Plugin\Block\Stockqty\AbstractStockqtyPlugin">
-        <plugin name="perspective_only_x_left_modifier_plugin" type="Perspective\OnlyXLeftModifier\Plugin\StockQtyPlugin" sortOrder="10"/>
+        <plugin name="perspective_only_x_left_modifier_plugin" type="Perspective\OnlyXLeftModifier\Plugin\StockQtyPlugin" sortOrder="10" disabled="true"/>
     </type>
 </config>

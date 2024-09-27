@@ -386,6 +386,7 @@ return [
         'Perspective_DemoPlugin' => 1,
         'Perspective_IncreaseCurrencyRates' => 1,
         'Perspective_OnlyXLeftModifier' => 1,
+        'Perspective_PreferenceDemo' => 0,
         'Perspective_Recommendations' => 1,
         'Perspective_ShippingConditions' => 1,
         'Perspective_SystemConfigExample' => 1
