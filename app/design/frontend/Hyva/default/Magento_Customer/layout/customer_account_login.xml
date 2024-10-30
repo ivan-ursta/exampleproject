@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Customer Login</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <container
+                name="customer.login.container"
+                htmlTag="div"
+                htmlId="customer-login-container"
+                htmlClass="login-container"
+            >
+                <block
+                    class="Magento\Customer\Block\Form\Login"
+                    name="customer_form_login"
+                    template="Magento_Customer::form/login.phtml"
+                    cacheable="false"
+                >
+                    <container name="form.additional.info" as="form_additional_info"/>
+                </block>
+                <block class="Magento\Customer\Block\Form\Login\Info" name="customer.new" template="Magento_Customer::newcustomer.phtml"/>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

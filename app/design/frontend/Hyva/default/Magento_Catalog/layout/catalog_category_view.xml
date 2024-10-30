@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="catalog_list_item" />
+    <body>
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">justify-start text-4xl mb-4</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="category.view.container" htmlId="category-view-container" htmlClass="category-view container">
+            <block class="Magento\Catalog\Block\Category\View" name="category.image" template="Magento_Catalog::category/image.phtml">
+                <arguments>
+                    <argument name="image" xsi:type="object">Magento\Catalog\ViewModel\Category\Image</argument>
+                    <argument name="output" xsi:type="object">Magento\Catalog\ViewModel\Category\Output</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Category\View" name="category.description" template="Magento_Catalog::category/description.phtml"/>
+            <block class="Magento\Catalog\Block\Category\View" name="category.cms" template="Magento_Catalog::category/cms.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <block class="Magento\Catalog\Block\Category\View" name="category.products" template="Magento_Catalog::category/products.phtml">
+                <block class="Magento\Catalog\Block\Product\ListProduct" name="category.products.list" as="product_list" template="Magento_Catalog::product/list.phtml">
+                    <arguments>
+                        <argument name="eager_load_images_count" xsi:type="number">3</argument>
+                    </arguments>
+                    <block name="category.products.list.options" as="product_options"
+                           template="Magento_Catalog::product/options/options.phtml">
+                    </block>
+                    <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="product_list_toolbar" template="Magento_Catalog::product/list/toolbar.phtml">
+                        <block class="Magento\Theme\Block\Html\Pager" name="product_list_toolbar_pager"/>
+                    </block>
+                    <action method="setToolbarBlockName">
+                        <argument name="name" xsi:type="string">product_list_toolbar</argument>
+                    </action>
+                    <container name="category.product.list.additional" as="additional" label="Additional Info" after="product_list_toolbar" />
+                </block>
+            </block>
+        </referenceContainer>
+
+        <referenceBlock name="product.price.render.default">
+            <!-- In core Magento this happens in \Magento\Catalog\Block\Product\ListProduct::getPriceRender -->
+            <arguments>
+                <argument name="is_product_list" xsi:type="boolean">true</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="sidebar.additional">
+            <block
+                name="catalog.compare.sidebar"
+                template="Magento_Catalog::product/compare/sidebar.phtml"
+                ifconfig="catalog/frontend/show_sidebar_in_list"
+            />
+
+            <block class="Magento\Catalog\Block\Widget\RecentlyViewed"
+                   name="recently_viewed_products.default_widget_plp"
+                   ifconfig="catalog/recently_products/show_on_plp"
+                   template="Magento_Catalog::product/widget/viewed/sidebar.phtml">
+                <arguments>
+                    <argument name="page_size" xsi:type="number">3</argument>
+                    <argument name="show_attributes" xsi:type="string">name,image,price,learn_more</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+    </body>
+</page>

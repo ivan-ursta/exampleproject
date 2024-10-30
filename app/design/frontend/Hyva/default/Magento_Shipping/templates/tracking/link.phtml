@@ -1,0 +1,20 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Shipping\Block\Tracking\Link;
+
+/** @var Escaper $escaper */
+/** @var Link $block */
+
+$order = $block->getOrder();
+?>
+<a href="<?= $escaper->escapeUrl($block->getWindowUrl($order)) ?>" class="text-primary underline"
+   target="_blank" rel="noopener" title="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>">
+    <?= $escaper->escapeHtml($block->getLabel()) ?>
+</a>

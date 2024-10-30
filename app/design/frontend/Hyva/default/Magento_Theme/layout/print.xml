@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="css/print.css" media="print" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <attribute name="class" value="page-print"/>
+        <attribute name="class" value="p-4"/>
+        <referenceContainer name="header.container" remove="true"/>
+        <referenceBlock name="page.top" remove="true"/>
+        <referenceContainer name="div.sidebar.main" remove="true"/>
+        <referenceContainer name="div.sidebar.additional" remove="true"/>
+        <referenceContainer name="footer-container" remove="true"/>
+        <move element="logo" destination="main.content" before="-" />
+        <referenceBlock name="copyright" remove="true"/>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="sales.order.print.js" template="Magento_Theme::html/print.phtml" />
+        </referenceContainer>
+    </body>
+</page>

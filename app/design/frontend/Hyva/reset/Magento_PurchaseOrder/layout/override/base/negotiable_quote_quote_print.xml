@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="quote.references.container">
+<!--            <block name="negotiable.quote.info.purchase.order"-->
+<!--                   class="Magento\PurchaseOrder\Block\Quote\Info\PurchaseOrder"-->
+<!--                   template="Magento_PurchaseOrder::quote/info/purchaseorder.phtml"-->
+<!--                   before="negotiable.quote.info.order"/>-->
+        </referenceContainer>
+    </body>
+</page>

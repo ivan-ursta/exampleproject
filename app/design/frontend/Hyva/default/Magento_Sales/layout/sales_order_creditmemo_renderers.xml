@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="sales.order.creditmemo.renderers">
+            <block class="Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer" name="sales.order.creditmemo.renderers.default" as="default" template="Magento_Sales::order/items/renderer/default.phtml">
+                <arguments>
+                    <argument name="is_context_creditmemo" xsi:type="string">true</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

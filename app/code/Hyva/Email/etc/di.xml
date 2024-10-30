@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Design\Fallback\Rule\ModularSwitch">
+        <plugin name="hyva_email" type="Hyva\Email\Plugin\FallbackRulePlugin" sortOrder="10" />
+    </type>
+    <type name="Magento\Deploy\Package\PackageFile">
+        <plugin name="hyva_email" type="Hyva\Email\Plugin\PackageFilePlugin" sortOrder="10" />
+    </type>
+</config>

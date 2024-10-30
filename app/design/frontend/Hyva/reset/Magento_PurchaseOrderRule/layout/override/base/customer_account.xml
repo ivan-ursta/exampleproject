@@ -1,0 +1,24 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+<!--            <block class="Magento\PurchaseOrder\Block\Customer\Account\Link"-->
+<!--                   name="customer-account-navigation-purchase-order-rule-link"-->
+<!--                   after="customer-account-navigation-company-roles-link">-->
+<!--                <arguments>-->
+<!--                    <argument name="path" xsi:type="string">purchaseorderrule/</argument>-->
+<!--                    <argument name="resource" xsi:type="string">Magento_PurchaseOrderRule::view_approval_rules</argument>-->
+<!--                    <argument name="label" xsi:type="string" translate="true">Approval Rules</argument>-->
+<!--                    <argument name="sortOrder" xsi:type="number">90</argument>-->
+<!--                </arguments>-->
+<!--            </block>-->
+        </referenceBlock>
+    </body>
+</page>

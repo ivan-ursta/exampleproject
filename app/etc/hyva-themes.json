@@ -1,0 +1,7 @@
+{
+    "extensions": [
+        {
+            "src": "app\/code\/Hyva\/Theme"
+        }
+    ]
+}

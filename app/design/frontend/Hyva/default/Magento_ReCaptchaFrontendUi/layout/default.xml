@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Recaptcha input element blocks -->
+        <!-- reCaptcha v2 "I'm not a robot" -->
+        <block name="recaptcha_input_field_recaptcha"
+               template="Magento_ReCaptchaFrontendUi::recaptcha_checkbox.phtml" />
+        <!-- reCaptcha v2 invisible -->
+        <block name="recaptcha_input_field_invisible"
+               template="Magento_ReCaptchaFrontendUi::recaptcha_invisible.phtml" />
+        <!-- reCaptcha v3 invisible -->
+        <block name="recaptcha_input_field"
+               template="Magento_ReCaptchaFrontendUi::recaptcha.phtml" />
+
+        <!-- Legal notice blocks (only for v3 invisible) -->
+        <block name="recaptcha_legal_notice" template="Magento_ReCaptchaFrontendUi::legal_notice.phtml" />
+
+        <!-- Script Token blocks to process the validation and submit the form if successful -->
+        <!-- reCaptcha v2 "I'm not a robot" -->
+        <block name="recaptcha_validation_recaptcha"
+               template="Magento_ReCaptchaFrontendUi::js/script_token_recaptcha.phtml" />
+        <!-- reCaptcha v2 invisible -->
+        <block name="recaptcha_validation_invisible"
+               template="Magento_ReCaptchaFrontendUi::js/script_token_invisible.phtml" />
+        <!-- reCaptcha v3 invisible -->
+        <block name="recaptcha_validation"
+               template="Magento_ReCaptchaFrontendUi::js/script_token.phtml" />
+
+        <referenceContainer name="before.body.end">
+            <block name="recaptcha_base" template="Magento_ReCaptchaFrontendUi::js/script_loader.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

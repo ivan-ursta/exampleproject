@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- can't override layout files in /view/_base_/layout/
+        /src/vendor/magento/module-ui/view/base/layout/default.xml
+        -->
+        <referenceBlock name="theme.active.editor" remove="true" />
+        <referenceBlock name="logger" remove="true"/>
+    </body>
+</page>

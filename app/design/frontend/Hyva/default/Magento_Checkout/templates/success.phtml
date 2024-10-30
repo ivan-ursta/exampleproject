@@ -1,0 +1,50 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Magento\Checkout\Block\Onepage\Success;
+
+/** @var Success $block */
+/** @var Escaper $escaper */
+?>
+<div class="checkout-success py-4">
+    <?php if ($block->getOrderId()): ?>
+        <?php if ($block->getCanViewOrder()): ?>
+            <p>
+                <?= $escaper->escapeHtml(
+                    __(
+                        'Your order number is: %1.',
+                        sprintf(
+                            '<a href="%s" class="order-number"><strong>%s</strong></a>',
+                            $escaper->escapeUrl($block->getViewOrderUrl()),
+                            $block->getOrderId()
+                        )
+                    ),
+                    ['a', 'strong']
+                ) ?>
+            </p>
+        <?php  else: ?>
+            <p><?= $escaper->escapeHtml(__('Your order # is: <span>%1</span>.', $block->getOrderId()), ['span']) ?></p>
+        <?php endif;?>
+        <p>
+            <?= $escaper->escapeHtml(
+                __('We\'ll email you an order confirmation with details and tracking info.')
+            ) ?>
+        </p>
+    <?php endif; ?>
+
+    <?= $block->getAdditionalInfoHtml() ?>
+
+    <div class="my-4">
+        <a class="btn btn-primary inline-flex" href="<?= $escaper->escapeUrl($block->getContinueUrl()) ?>">
+            <span><?= $escaper->escapeHtml(__('Continue Shopping')) ?></span>
+        </a>
+    </div>
+</div>

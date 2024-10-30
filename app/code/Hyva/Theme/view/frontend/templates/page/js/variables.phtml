@@ -1,0 +1,69 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Cookie as CookieViewModel;
+use Hyva\Theme\ViewModel\Store as StoreViewModel;
+use Magento\Cookie\Helper\Cookie;
+use Magento\Framework\App\PageCache\FormKey;
+use Magento\Framework\App\PageCache\Version;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use Magento\Theme\Controller\Result\MessagePlugin;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var CookieViewModel $cookieViewModel */
+$cookieViewModel = $viewModels->require(Hyva\Theme\ViewModel\Cookie::class);
+
+/** @var StoreViewModel $storeViewModel */
+$storeViewModel = $viewModels->require(StoreViewModel::class);
+
+/** @var Magento\Cookie\Helper\Cookie $cookieHelper */
+$cookieHelper = $this->helper(Cookie::class);
+$cookieRestriction = $cookieHelper->isCookieRestrictionModeEnabled();
+?>
+<script>
+    var BASE_URL = '<?= /* @noEscape */ $block->getUrl('/') ?>';
+    var THEME_PATH = '<?= /* @noEscape */ $block->getViewFileUrl('/') ?>';
+    var COOKIE_CONFIG = {
+        "expires": null,
+        "path": "<?= $escaper->escapeJs($cookieViewModel->getPath()) ?>",
+        "domain": "<?= $escaper->escapeJs($cookieViewModel->getDomain()) ?>",
+        "secure": <?= $cookieViewModel->getCookieSecure() ? 'true' : 'false' ?>,
+        "lifetime": "<?= $escaper->escapeJs($cookieViewModel->getLifetime()) ?>",
+        "cookie_restriction_enabled": <?= /* @noEscape */ $cookieRestriction ? 'true' : 'false'?>
+    };
+    var CURRENT_STORE_CODE = '<?= /* @noEscape */ $storeViewModel->getStoreCode(); ?>';
+    var CURRENT_WEBSITE_ID = '<?= /* @noEscape */ $storeViewModel->getWebsiteId(); ?>';
+
+    window.hyva = window.hyva || {}
+
+    window.cookie_consent_groups = window.cookie_consent_groups || {}
+    window.cookie_consent_groups['necessary'] = true;
+
+    window.cookie_consent_config = window.cookie_consent_config || {};
+    window.cookie_consent_config['necessary'] = [].concat(
+        window.cookie_consent_config['necessary'] || [],
+        [
+            '<?= /* @noEscape */ Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>',
+            '<?= /* @noEscape */ FormKey::COOKIE_NAME ?>',
+            '<?= /* @noEscape */ MessagePlugin::MESSAGES_COOKIES_NAME ?>',
+            '<?= /* @noEscape */ Version::COOKIE_NAME ?>',
+            'mage-cache-sessid',
+            'last_visited_store',
+            'section_data_ids'
+        ]
+    );
+</script>

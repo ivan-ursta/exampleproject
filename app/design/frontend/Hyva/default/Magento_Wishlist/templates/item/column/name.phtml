@@ -1,0 +1,25 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Info;
+use Magento\Wishlist\Model\Item;
+
+/** @var Info $block */
+/** @var Escaper $escaper */
+
+/** @var Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+?>
+<span class="product-item-name mt-2 mb-1 items-center justify-center text-primary font-semibold text-lg text-center">
+    <a href="<?= $escaper->escapeUrl($block->getProductUrl($item)) ?>"
+       title="<?= $escaper->escapeHtmlAttr($product->getName()) ?>" class="product-item-link">
+        <?= $escaper->escapeHtml($product->getName()) ?>
+    </a>
+</span>

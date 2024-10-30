@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="sales_order_creditmemo_renderers"/>
+    <update handle="sales_order_item_price"/>
+    <update handle="sales_order_info_links"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Sales\Block\Order\Creditmemo" name="sales.order.creditmemo" cacheable="false">
+                <block class="Magento\Sales\Block\Order\Info" name="order.date"
+                       template="Magento_Sales::order/order_date.phtml"/>
+                <block class="Magento\Sales\Block\Order\Info\Buttons" name="sales.creditmemo.buttons"
+                       template="Magento_Sales::order/info/buttons_creditmemo.phtml"/>
+                <container name="order_top_items"></container>
+                <block class="Magento\Sales\Block\Order\Info" name="sales.order.info"/>
+                <block class="Magento\Sales\Block\Order\Creditmemo\Items" name="creditmemo_items" template="Magento_Sales::order/creditmemo/items.phtml">
+                    <block class="Magento\Framework\View\Element\RendererList" name="sales.order.creditmemo.renderers" as="renderer.list"/>
+                    <block class="Magento\Sales\Block\Order\Creditmemo\Totals" name="creditmemo_totals" template="Magento_Sales::order/totals/totals.phtml">
+                        <block class="Magento\Tax\Block\Sales\Order\Tax" name="tax" template="Magento_Tax::order/totals/tax.phtml"/>
+                    </block>
+                    <block class="Magento\Sales\Block\Order\Comments" name="creditmemo_comments" template="Magento_Sales::order/comments.phtml"/>
+                </block>
+                <block class="Magento\Sales\Block\Order\Info" name="order.status" template="Magento_Sales::order/order_status.phtml"/>
+            </block>
+        </referenceContainer>
+        <block class="Magento\Framework\View\Element\Template" name="additional.product.info" template="Magento_Theme::template.phtml"/>
+    </body>
+</page>

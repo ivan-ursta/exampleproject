@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.item.renderers.default.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.default.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.default.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.simple.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.simple.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.simple.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.bundle.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.bundle.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.bundle.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.downloadable.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.downloadable.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.downloadable.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.grouped.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.grouped.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.grouped.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.configurable.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.configurable.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.configurable.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.virtual.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.virtual.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.virtual.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.item.renderers.gift-card.actions">
+<!--            <block class="Magento\RequisitionList\Block\Cart\Item\Renderer\Actions\AddToRequisition"-->
+<!--                   name="checkout.cart.item.renderers.gift-card.actions.add_to_requisition_list"-->
+<!--                   ifconfig="btob/website_configuration/requisition_list_active"-->
+<!--                   template="Magento_RequisitionList::cart/item/renderer/actions/add_to_requisition_list.phtml"-->
+<!--                   after="checkout.cart.item.renderers.giftcard.actions.move_to_wishlist"-->
+<!--                   before="checkout.cart.item.renderers.default.actions.edit"/>-->
+        </referenceBlock>
+    </body>
+</page>

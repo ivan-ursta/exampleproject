@@ -1,0 +1,105 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+
+$parentBlock = $block->getParentBlock();
+$track = $block->getData('track');
+$email = $block->getData('storeSupportEmail');
+$fields = [
+    'Status'               => 'getStatus',
+    'Signed by'            => 'getSignedby',
+    'Delivered to'         => 'getDeliveryLocation',
+    'Shipped or billed on' => 'getShippedDate',
+    'Service Type'         => 'getService',
+    'Weight'               => 'getWeight',
+];
+$number = is_object($track) ? $track->getTracking() : $track['number'];
+?>
+<div class="text-xl"><?= $escaper->escapeHtml(__('Order tracking')) ?></div>
+<div id="tracking-table-popup-<?= $escaper->escapeHtml($number) ?>">
+    <?php if (is_object($track)): ?>
+        <div>
+            <div class="inline-block pr-1"><?= $escaper->escapeHtml(__('Tracking Number:')) ?></div>
+            <div class="inline-block px-1"><?= $escaper->escapeHtml($number) ?></div>
+        </div>
+        <?php if ($track->getCarrierTitle()): ?>
+            <div>
+                <div class="inline-block pr-1"><?= $escaper->escapeHtml(__('Carrier:')) ?></div>
+                <div class="inline-block px-1"><?= $escaper->escapeHtml($track->getCarrierTitle()) ?></div>
+            </div>
+        <?php endif; ?>
+        <?php if ($track->getErrorMessage()): ?>
+            <div>
+                <div class="inline-block pr-1"><?= $escaper->escapeHtml(__('Error:')) ?></div>
+                <div class="inline-block px-1">
+                    <?= $escaper->escapeHtml(__('Tracking information is currently not available. Please ')) ?>
+                    <?php if ($parentBlock->getContactUsEnabled()): ?>
+                        <a href="<?= $escaper->escapeUrl($parentBlock->getContactUs()) ?>" target="_blank"
+                           title="<?= $escaper->escapeHtml(__('contact us')) ?>">
+                            <?= $escaper->escapeHtml(__('contact us')) ?>
+                        </a>
+                        <?= $escaper->escapeHtml(__(' for more information or ')) ?>
+                    <?php endif; ?>
+                    <?= $escaper->escapeHtml(__('email us at ')) ?>
+                    <a href="mailto:<?= /* @noEscape */ $email ?>"><?= /* @noEscape */ $email ?></a>
+                </div>
+            </div>
+        <?php elseif ($track->getTrackSummary()): ?>
+            <div>
+                <div class="inline-block pr-1"><?= $escaper->escapeHtml(__('Info:')) ?></div>
+                <div class="inline-block px-1"><?= $escaper->escapeHtml($track->getTrackSummary()) ?></div>
+            </div>
+        <?php elseif ($track->getUrl()): ?>
+            <div>
+                <div class="inline-block pr-1"><?= $escaper->escapeHtml(__('Track:')) ?></div>
+                <div class="inline-block px-1">
+                    <a href="<?= $escaper->escapeUrl($track->getUrl()) ?>" target="_blank">
+                        <?= $escaper->escapeUrl($track->getUrl()) ?>
+                    </a>
+                </div>
+            </div>
+        <?php else: ?>
+            <?php foreach ($fields as $title => $property): ?>
+                <?php if (!empty($track->$property())): ?>
+                    <div>
+                        <div class="inline-block pr-1"><?= /* @noEscape */
+                            $escaper->escapeHtml(__($title . ':')) ?></div>
+                        <div class="inline-block px-1"><?= $escaper->escapeHtml($track->$property()) ?></div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <?php if ($track->getDeliverydate()): ?>
+                <div>
+                    <div class="inline-block pr-1">
+                        <?= $escaper->escapeHtml($parentBlock->getDeliveryDateTitle()->getTitle($track)) ?>
+                    </div>
+                    <div class="inline-block px-1">
+                        <?= /* @noEscape */
+                        $parentBlock->formatDeliveryDateTime($track->getDeliverydate(), $track->getDeliverytime()) ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php elseif (isset($track['title']) && isset($track['number']) && $track['number']): ?>
+        <?php /* if the tracking is custom value */ ?>
+        <div>
+            <div class="inline-block pr-1">
+                <?= ($track['title'] ? $escaper->escapeHtml($track['title']) : $escaper->escapeHtml(__('N/A'))) ?>:
+            </div>
+            <div class="inline-block px-1">
+                <?= (isset($track['number']) ? $escaper->escapeHtml($track['number']) : '') ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>

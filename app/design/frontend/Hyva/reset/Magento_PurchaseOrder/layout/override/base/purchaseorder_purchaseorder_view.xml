@@ -1,0 +1,176 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Status"-->
+<!--                   name="purchase.order.status"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view/info/status.phtml"/>-->
+            <container name="purchase.order.references.container" htmlTag="div" htmlClass="purchase-order-references">
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\NegotiableQuote"-->
+<!--                       name="purchase.order.info.negotiable.quote"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/info/negotiable_quote.phtml"/>-->
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Order"-->
+<!--                       name="purchase.order.info.order"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/info/order.phtml"/>-->
+            </container>
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Title"-->
+<!--                   name="purchase.order.title"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view/info/title.phtml"/>-->
+<!--            <block name="purchase.order.payment.banner"-->
+<!--                   class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Banner"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view/info/banner.phtml"/>-->
+            <container name="purchase.order.actions.container" htmlTag="div"
+                       htmlClass="actions-toolbar purchaseorder-actions-toolbar">
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Links"-->
+<!--                       name="purchase.order.info.links" cacheable="false"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/info/links.phtml"/>-->
+<!--                <block class="Magento\Framework\View\Element\Template"-->
+<!--                       name="purchase.order.action.additem"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/add_item.phtml"/>-->
+            </container>
+        </referenceBlock>
+        <referenceContainer name="content">
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\View"-->
+<!--                   name="purchase.order.view"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view.phtml">-->
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Comments"-->
+<!--                       name="purchase.order.view.comments"-->
+<!--                       as="comments"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/comments.phtml">-->
+<!--                    <arguments>-->
+<!--                        <argument name="code" xsi:type="string">comments</argument>-->
+<!--                        <argument name="title" translate="true" xsi:type="string">Comments</argument>-->
+<!--                        <argument name="sort_order" xsi:type="string">20</argument>-->
+<!--                    </arguments>-->
+<!--                </block>-->
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\History"-->
+<!--                       name="purchase.order.view.history.log"-->
+<!--                       as="history-log"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/history.phtml">-->
+<!--                    <arguments>-->
+<!--                        <argument name="code" xsi:type="string">history-log</argument>-->
+<!--                        <argument name="title" translate="true" xsi:type="string">History Log</argument>-->
+<!--                        <argument name="sort_order" xsi:type="string">30</argument>-->
+<!--                    </arguments>-->
+<!--                </block>-->
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Items"-->
+<!--                       name="purchase.order.view.items"-->
+<!--                       as="items-quoted"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/items.phtml">-->
+<!--                    <arguments>-->
+<!--                        <argument name="code" xsi:type="string">items-quoted</argument>-->
+<!--                        <argument name="title" translate="true" xsi:type="string">Purchase Order Items</argument>-->
+<!--                        <argument name="css_class" xsi:type="string">table-wrapper quote-table</argument>-->
+<!--                        <argument name="sort_order" xsi:type="string">10</argument>-->
+<!--                    </arguments>-->
+<!--                    <block class="Magento\Framework\View\Element\RendererList"-->
+<!--                           name="checkout.cart.item.renderers" as="renderer.list">-->
+<!--                        <block class="Magento\Checkout\Block\Cart\Item\Renderer"-->
+<!--                               name="checkout.cart.item.renderers.default" as="default"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/default.phtml">-->
+<!--                            <arguments>-->
+<!--                                <argument name="view_model" xsi:type="object">-->
+<!--                                    Magento\PurchaseOrder\ViewModel\Quote\Items-->
+<!--                                </argument>-->
+<!--                            </arguments>-->
+<!--                            <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"-->
+<!--                                   name="checkout.cart.item.renderers.default.actions" as="actions"/>-->
+<!--                        </block>-->
+<!--                        <block class="Magento\ConfigurableProduct\Block\Cart\Item\Renderer\Configurable"-->
+<!--                               name="checkout.cart.item.renderers.configurable" as="configurable"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/default.phtml">-->
+<!--                            <arguments>-->
+<!--                                <argument name="view_model" xsi:type="object">-->
+<!--                                    Magento\PurchaseOrder\ViewModel\Quote\Items-->
+<!--                                </argument>-->
+<!--                            </arguments>-->
+<!--                            <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"-->
+<!--                                   name="checkout.cart.item.renderers.configurable.actions" as="actions"/>-->
+<!--                        </block>-->
+<!--                        <block class="Magento\GroupedProduct\Block\Cart\Item\Renderer\Grouped"-->
+<!--                               name="checkout.cart.item.renderers.grouped" as="grouped"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/default.phtml">-->
+<!--                            <arguments>-->
+<!--                                <argument name="view_model" xsi:type="object">-->
+<!--                                    Magento\PurchaseOrder\ViewModel\Quote\Items-->
+<!--                                </argument>-->
+<!--                            </arguments>-->
+<!--                            <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"-->
+<!--                                   name="checkout.cart.item.renderers.grouped.actions" as="actions"/>-->
+<!--                        </block>-->
+<!--                        <block class="Magento\Downloadable\Block\Checkout\Cart\Item\Renderer"-->
+<!--                               name="checkout.cart.item.renderers.downloadable" as="downloadable"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/default.phtml">-->
+<!--                            <arguments>-->
+<!--                                <argument name="view_model" xsi:type="object">-->
+<!--                                    Magento\PurchaseOrder\ViewModel\Quote\Items-->
+<!--                                </argument>-->
+<!--                            </arguments>-->
+<!--                            <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"-->
+<!--                                   name="checkout.cart.item.renderers.downloadable.actions" as="actions"/>-->
+<!--                        </block>-->
+<!--                        <block class="Magento\GiftCard\Block\Checkout\Cart\Item\Renderer"-->
+<!--                               name="checkout.cart.item.renderers.giftcard" as="giftcard"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/default.phtml">-->
+<!--                            <arguments>-->
+<!--                                <argument name="view_model" xsi:type="object">-->
+<!--                                    Magento\PurchaseOrder\ViewModel\Quote\Items-->
+<!--                                </argument>-->
+<!--                            </arguments>-->
+<!--                            <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"-->
+<!--                                   name="checkout.cart.item.renderers.giftcard.actions" as="actions"/>-->
+<!--                        </block>-->
+<!--                        <block class="Magento\Bundle\Block\Checkout\Cart\Item\Renderer"-->
+<!--                               name="checkout.cart.item.renderers.bundle" as="bundle"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/default.phtml">-->
+<!--                            <arguments>-->
+<!--                                <argument name="view_model" xsi:type="object">-->
+<!--                                    Magento\PurchaseOrder\ViewModel\Quote\Items-->
+<!--                                </argument>-->
+<!--                            </arguments>-->
+<!--                            <block class="Magento\Checkout\Block\Cart\Item\Renderer\Actions"-->
+<!--                                   name="checkout.cart.item.renderers.bundle.actions" as="actions"/>-->
+<!--                        </block>-->
+<!--                        <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Items\Messages"-->
+<!--                               name="checkout.cart.item.renderers.messages"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/items/messages.phtml"/>-->
+<!--                    </block>-->
+<!--                    <block class="Magento\Framework\View\Element\Text\ListText"-->
+<!--                           name="checkout.cart.order.actions"/>-->
+<!--                    <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Totals"-->
+<!--                           name="purchase.order.totals"-->
+<!--                           template="Magento_PurchaseOrder::purchaseorder/view/totals.phtml">-->
+<!--                        <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Totals\Original"-->
+<!--                               name="purchase.order.totals.original"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/totals/original.phtml"/>-->
+<!--                        <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Totals\Giftcards"-->
+<!--                               name="purchase.order.totals.giftcards"-->
+<!--                               template="Magento_PurchaseOrder::purchaseorder/view/totals/giftcards.phtml"/>-->
+<!--                    </block>-->
+<!--                </block>-->
+<!--            </block>-->
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Shipping"-->
+<!--                   name="purchase.order.info"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view/shipping.phtml">-->
+<!--            </block>-->
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Comments"-->
+<!--                   name="purchase.order.comments.form"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view/comments/form.phtml"/>-->
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Info\Buttons"-->
+<!--                   name="purchase.order.info.buttons"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view/info/buttons.phtml">-->
+<!--                <block class="Magento\Framework\View\Element\Template" name="purchase.order.info.buttons.additional"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/view/info/additional_buttons.phtml"/>-->
+<!--            </block>-->
+        </referenceContainer>
+<!--        <move element="page.main.title" destination="content.top" before="-"/>-->
+    </body>
+</page>

@@ -1,0 +1,78 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+// phpcs:disable Generic.Files.LineLength
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsSolid $heroicons */
+$heroicons = $viewModels->require(HeroiconsSolid::class);
+
+$title = "Hyvä Themes";
+$content = "ECOMMERCE MADE HAPPY.";
+$link = "https://hyva.io/";
+$cta = "Visit hyva.io";
+?>
+
+<section class="hero-image text-gray-700 body-font -mt-8 -mx-6 sm:-mx-8">
+    <div class="relative">
+        <div class="container max-w-screen-2xl mx-auto px-0 shadow-lg">
+            <div class="relative shadow-xl sm:overflow-hidden">
+                <div class="absolute inset-0">
+                    <picture>
+                        <source class="h-full w-full object-cover"
+                             srcset="<?= $escaper->escapeHtmlAttr($block->getViewFileUrl('images/hero.jpg')) ?>"
+                             media="(max-width: 639px)"
+                        >
+                        <source class="h-full w-full object-cover"
+                             srcset="<?= $escaper->escapeHtmlAttr($block->getViewFileUrl('images/hero-2x.jpg')) ?>"
+                             media="(min-width: 640px)"
+                        >
+                        <?php
+                        /* This image is hidden from assistive technology, if you want to make it visible and accessible
+                           set understandable alternative text in alt attribute and remove aria-hidden="true".
+                           Check alt decision tree: https://www.w3.org/WAI/tutorials/images/decision-tree/ for more
+                           information about alternative text. */
+                        ?>
+                        <img class="h-full w-full object-cover"
+                             src="<?= $escaper->escapeHtmlAttr($block->getViewFileUrl('images/hero.jpg')) ?>"
+                             alt=""
+                             width="960"
+                             height="540"
+                             aria-hidden="true"
+                        >
+                    </picture>
+                </div>
+                <div class="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 px-8 lg:px-16">
+                    <h1 class="title-font text-4xl sm:text-5xl mb-2 font-bold text-blue-900">
+                        <?= $escaper->escapeHtml($title) ?>
+                    </h1>
+                    <?php if ($content): ?>
+                        <p class="text-2xl sm:text-3xl mb-4 font-normal text-blue-900">
+                            <?= $escaper->escapeHtml($content) ?>
+                        </p>
+                    <?php endif; ?>
+                    <a class="btn btn-primary inline-flex" href="<?= $escaper->escapeUrl($link) ?>">
+                        <?= $escaper->escapeHtml($cta) ?>
+                        <?= $heroicons->chevronDoubleRightHtml('w-4 h-4 inline-flex self-center ml-1', 30, 30) ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

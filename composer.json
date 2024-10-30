@@ -40,7 +40,8 @@
         "magento/module-widget-sample-data": "100.4.*",
         "magento/module-wishlist-sample-data": "100.4.*",
         "magento/product-community-edition": "2.4.7",
-        "magento/sample-data-media": "100.4.*"
+        "magento/sample-data-media": "100.4.*",
+        "perspectiveteam/module-novaposhtashipping": "^2.4"
     },
     "autoload": {
         "exclude-from-classmap": [
@@ -91,12 +92,12 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "repositories": [
-        {
+    "repositories": {
+        "0": {
             "type": "composer",
             "url": "https://repo.magento.com/"
         }
-    ],
+    },
     "extra": {
         "magento-force": "override"
     }

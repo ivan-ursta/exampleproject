@@ -1,0 +1,21 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\BlockCache;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var BlockCache $blockCacheViewModel */
+$blockCacheViewModel = $viewModels->require(BlockCache::class);
+
+echo $block->getChildHtml();
+
+// Copy child cache tags to this block so they are added to the block_html cache record
+$block->setData('cache_tags', $blockCacheViewModel->collectBlockChildrenCacheTags($block));

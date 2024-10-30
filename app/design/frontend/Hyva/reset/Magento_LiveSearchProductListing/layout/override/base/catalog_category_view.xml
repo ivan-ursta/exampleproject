@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="page-products"/>
+
+        <!-- blocks and containers visibility controlled by plugin -->
+<!--        <referenceContainer name="title"/>-->
+<!--        <referenceContainer name="page.main.title"/>-->
+<!--        <referenceContainer name="sidebar.main"/>-->
+<!--        <referenceContainer name="sidebar.additional"/>-->
+<!--        <referenceContainer name="category.products"/>-->
+<!--        <referenceBlock name="product.price.render.default"/>-->
+
+        <referenceContainer name="columns">
+<!--            <block class="Magento\LiveSearchProductListing\Block\Frontend\Category\SaaSContext" before="-"-->
+<!--                   name="livesearch.product.listing"-->
+<!--                   template="Magento_LiveSearchProductListing::category_product_listing.phtml"-->
+<!--                   ifconfig="storefront_features/website_configuration/product_listing_widgets_active"-->
+<!--            />-->
+        </referenceContainer>
+    </body>
+</page>

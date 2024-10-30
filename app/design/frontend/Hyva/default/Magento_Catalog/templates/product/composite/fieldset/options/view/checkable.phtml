@@ -1,0 +1,124 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\ProductPrice;
+use Magento\Catalog\Block\Product\View\Options\Type\Select\Checkable;
+use Magento\Catalog\Model\Product\Option;
+use Magento\Catalog\Pricing\Price\CustomOptionPrice;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+
+/**
+ * @var Checkable $block
+ * @var Escaper $escaper
+ * @var ViewModelRegistry $viewModels
+ * @var SecureHtmlRenderer $secureRenderer
+ */
+
+$product = $block->getProduct();
+
+/** @var ProductPrice $productPriceViewModel */
+$productPriceViewModel = $viewModels->require(ProductPrice::class);
+
+$option = $block->getOption();
+
+if ($option): ?>
+    <?php
+    $configValue = $block->getPreconfiguredValue($option);
+    $optionType = $option->getType();
+    $arraySign = $optionType === Option::OPTION_TYPE_CHECKBOX ? '[]' : '';
+    $count = 1;
+    ?>
+
+<div class="options-list nested" id="options-<?= $escaper->escapeHtmlAttr($option->getId()) ?>-list">
+    <?php if ($optionType === Option::OPTION_TYPE_RADIO && !$option->getIsRequire()): ?>
+    <div class="field choice">
+        <input type="radio"
+               id="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>"
+               class="radio product-custom-option"
+               name="options[<?= $escaper->escapeHtmlAttr($option->getId()) ?>]"
+               value=""
+               checked
+               x-on:change="updateCustomOptionValue(
+                $dispatch, '<?= $escaper->escapeHtmlAttr($option->getId()) ?>', $event.target
+               )"
+        />
+        <label class="label text-left"
+               for="options_<?= $escaper->escapeHtmlAttr($option->getId()) ?>">
+            <span>
+                <?= $escaper->escapeHtml(__('None'))  ?>
+            </span>
+        </label>
+    </div>
+<?php endif; ?>
+    <?php foreach ($option->getValues() as $value): ?>
+        <?php
+        $checked = '';
+        $count++;
+        if ($arraySign) {
+            $checked = is_array($configValue) && in_array($value->getOptionTypeId(), $configValue) ? 'checked' : '';
+        } else {
+            $checked = $configValue == $value->getOptionTypeId() ? 'checked' : '';
+        }
+        $dataSelector = 'options[' . $option->getId() . ']';
+        if ($arraySign) {
+            $dataSelector .= '[' . $value->getOptionTypeId() . ']';
+        }
+
+        $optionId = $option->getId() . '_' . $value->getOptionTypeId();
+
+        $valuePrice = $productPriceViewModel->getCustomOptionPrice($value, CustomOptionPrice::PRICE_CODE, $product);
+        if ($productPriceViewModel->displayPriceInclAndExclTax()) {
+            $valueBasePrice = $value->getPrice(true);
+        }
+        ?>
+
+        <div class="field choice">
+            <input type="<?= $escaper->escapeHtmlAttr($optionType) ?>"
+                   class="<?= $optionType === Option::OPTION_TYPE_RADIO
+                       ? 'form-radio'
+                       : 'form-checkbox' ?>
+                       product-custom-option"
+                   name="options[<?= $escaper->escapeHtmlAttr($option->getId()) ?>]<?= /* @noEscape */ $arraySign ?>"
+                   id="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   value="<?= $escaper->escapeHtmlAttr($value->getOptionTypeId()) ?>"
+                   <?= $escaper->escapeHtml($checked) ?>
+                   x-ref="option-<?= $escaper->escapeHtmlAttr($option->getId() . '-' . $value->getOptionTypeId()) ?>"
+                   <?php if ($option->getIsRequire()): ?>
+                       required
+                       data-required
+                       oninvalid="this.setCustomValidity(this.dataset.validationMessage)"
+                       oninput="this.setCustomValidity('')"
+                       data-validation-message="<?= $escaper
+                           ->escapeHtmlAttr(__("Please select one of the options.")) ?>"
+                    <?php endif; ?>
+                   data-price-amount="<?= $escaper->escapeHtmlAttr($valuePrice) ?>"
+                   <?php if ($productPriceViewModel->displayPriceInclAndExclTax()): ?>
+                   data-base-price-amount="<?= $escaper->escapeHtmlAttr($valueBasePrice) ?>"
+                   <?php endif; ?>
+                   data-price-type="<?= $escaper->escapeHtmlAttr($value->getPriceType()) ?>"
+                   data-option-id="<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-ref="option-<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-on:change="updateCustomOptionValue(
+                    $dispatch, '<?= $escaper->escapeHtmlAttr($optionId) ?>', $event.target
+                   )"
+            />
+            <label class="label text-left"
+                   for="options_<?= $escaper->escapeHtmlAttr($optionId) ?>"
+                   x-html="updateOptionPrice('<?= $escaper->escapeJs($optionId) ?>', $el)"
+            >
+                <span><?= $escaper->escapeHtml($value->getTitle()) ?></span>
+                <span><?= /* @noEscape */ $block->formatPrice($value) ?></span>
+            </label>
+        </div>
+    <?php endforeach; ?>
+    </div>
+<?php endif; ?>

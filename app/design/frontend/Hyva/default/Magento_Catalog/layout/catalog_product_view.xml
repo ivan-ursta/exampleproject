@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+ -->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="catalog_product_opengraph"/>
+    <update handle="hyva_product_slider" />
+    <body>
+        <attribute name="itemtype" value="http://schema.org/Product"/>
+        <attribute name="itemscope" value="itemscope"/>
+        <referenceBlock name="page.main.title">
+            <arguments>
+                <argument name="css_class" xsi:type="string">mt-0 product text-3xl font-semibold text-center md:px-0 md:mt-10 md:mb-3</argument>
+                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="root">
+            <arguments>
+                <argument name="add_attribute" xsi:type="string">itemscope itemtype="http://schema.org/Product"
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="content">
+            <referenceContainer name="product.info.main">
+                <block class="Magento\Catalog\Block\Product\View" name="product.detail.page"
+                       template="Magento_Catalog::product/product-detail-page.phtml">
+                    <block class="Magento\Catalog\Block\Product\View"
+                           name="product.info"
+                           template="Magento_Catalog::product/view/product-info.phtml">
+                        <arguments>
+                            <!-- Use `default` as the value for `call` unless you want a specific method to be used. -->
+                            <argument name="attributes" xsi:type="array">
+                                <item name="sku" xsi:type="array">
+                                    <item name="call" xsi:type="string">getSku</item>
+                                    <item name="code" xsi:type="string">sku</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">sku</item>
+                                </item>
+                                <item name="color" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">color</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">color</item>
+                                </item>
+                                <item name="size" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">size</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">size</item>
+                                </item>
+                                <item name="gender" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">gender</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">gender</item>
+                                </item>
+                                <item name="material" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">material</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">material</item>
+                                </item>
+                                <item name="style_general" xsi:type="array">
+                                    <item name="call" xsi:type="string">default</item>
+                                    <item name="code" xsi:type="string">style_general</item>
+                                    <item name="label" xsi:type="string">default</item>
+                                    <item name="css_class" xsi:type="string">style_general</item>
+                                </item>
+                            </argument>
+                        </arguments>
+
+                        <block class="Magento\Catalog\Block\Product\View" name="product.info.review"
+                               template="Magento_Catalog::product/view/review.phtml" ifconfig="catalog/review/active"/>
+
+                        <block class="Magento\Catalog\Pricing\Render" name="product.price.tier">
+                            <arguments>
+                                <argument name="price_render" xsi:type="string">product.price.render.default</argument>
+                                <argument name="price_type_code" xsi:type="string">tier_price</argument>
+                                <argument name="zone" xsi:type="string">item_view</argument>
+                            </arguments>
+                        </block>
+
+                        <block class="Magento\Catalog\Block\Product\View"
+                               name="product.info.quantity"
+                               template="Magento_Catalog::product/view/quantity.phtml"
+                        />
+
+                        <block name="product.info.addtocart"  template="Magento_Catalog::product/view/addtocart.phtml"/>
+
+                        <block name="product.info.addtowishlist"  template="Magento_Catalog::product/view/addtowishlist.phtml"/>
+
+                        <block name="product.info.addtocompare"  template="Magento_Catalog::product/view/addtocompare.phtml"/>
+
+                        <container name="product.info.additional.actions"/>
+
+                        <block name="product.info.stockstatus"  template="Magento_Catalog::product/view/stock-status.phtml"/>
+
+                        <block class="Magento\Catalog\Block\Product\Price"
+                               name="product.info.price"
+                               template="Magento_Catalog::product/view/price.phtml"
+                        />
+
+                        <block class="Magento\Catalog\Block\Product\View"
+                               name="product.info.form"
+                               template="Magento_Catalog::product/view/product-form.phtml"
+                        >
+                            <block name="product.info.options.wrapper" as="product_options_wrapper" template="Magento_Catalog::product/view/options/wrapper.phtml">
+                                <block class="Magento\Catalog\Block\Product\View\Options" name="product.info.options" as="product_options" template="Magento_Catalog::product/view/options/options.phtml">
+                                    <block class="Magento\Catalog\Block\Product\View\Options\Type\DefaultType" name="product.info.options.default" as="default" template="Magento_Catalog::product/view/options/type/default.phtml"/>
+                                    <block class="Magento\Catalog\Block\Product\View\Options\Type\Text" name="product.info.options.text" as="text" template="Magento_Catalog::product/view/options/type/text.phtml"/>
+                                    <block class="Magento\Catalog\Block\Product\View\Options\Type\File" name="product.info.options.file" as="file" template="Magento_Catalog::product/view/options/type/file.phtml"/>
+                                    <block class="Magento\Catalog\Block\Product\View\Options\Type\Select" name="product.info.options.select" as="select" template="Magento_Catalog::product/view/options/type/select.phtml"/>
+                                    <block class="Magento\Catalog\Block\Product\View\Options\Type\Date" name="product.info.options.date" as="date" template="Magento_Catalog::product/view/options/type/date.phtml"/>
+                                </block>
+                            </block>
+                        </block>
+
+                        <block class="Magento\Catalog\Block\ShortcutButtons\InCatalog" name="addtocart.shortcut.buttons" />
+
+                        <container name="product.info.additional" />
+                    </block>
+
+                    <block class="Magento\Catalog\Block\Product\View\Gallery" name="product.media"
+                           template="Magento_Catalog::product/view/gallery.phtml">
+                        <arguments>
+                            <argument name="gallery_options"
+                                      xsi:type="object">Magento\Catalog\Block\Product\View\GalleryOptions
+                            </argument>
+                            <argument name="imageHelper" xsi:type="object">Magento\Catalog\Helper\Image</argument>
+                        </arguments>
+                    </block>
+
+                    <block class="Magento\Catalog\Block\Product\View"
+                           name="product.info.options.wrapper.bottom"
+                           as="product_options_wrapper_bottom"
+                           template="Magento_Catalog::product/view/options/wrapper/bottom.phtml"/>
+
+                    <block name="upsell" class="Magento\Catalog\Block\Product\View"
+                           template="Magento_Catalog::product/slider/product-slider.phtml">
+                        <arguments>
+                            <argument name="type" xsi:type="string">upsell</argument>
+                            <argument name="title" xsi:type="string"
+                                      translate="true">We found other products you might like!
+                            </argument>
+                            <argument name="heading_tag" xsi:type="string">h2</argument>
+                        </arguments>
+                    </block>
+
+                    <block name="related" class="Magento\Catalog\Block\Product\View"
+                           template="Magento_Catalog::product/slider/product-slider.phtml">
+                        <arguments>
+                            <argument name="type" xsi:type="string">related</argument>
+                            <argument name="title" xsi:type="string" translate="true">Related Products</argument>
+                            <argument name="heading_tag" xsi:type="string">h2</argument>
+                        </arguments>
+                    </block>
+
+                    <block class="Magento\Catalog\Block\Product\View\Details"
+                           name="product.info.details"
+                           template="Magento_Catalog::product/view/sections/product-sections.phtml">
+                        <block name="product.section.title.renderer" template="Magento_Catalog::product/view/sections/default-section-title.phtml"/>
+
+                        <block name="description"
+                               template="Magento_Catalog::product/view/sections/description.phtml"
+                               group="detailed_info">
+                            <arguments>
+                                <argument name="title_template" xsi:type="string">Magento_Catalog::product/view/sections/description-section-title.phtml</argument>
+                                <argument name="sort_order" xsi:type="number">-20</argument>
+                            </arguments>
+                        </block>
+
+                        <block
+                            class="Magento\Catalog\Block\Product\View\Attributes"
+                            name="product.attributes"
+                            as="additional"
+                            template="Magento_Catalog::product/view/attributes.phtml"
+                            group="detailed_info">
+                            <arguments>
+                                <argument name="title" xsi:type="string" translate="true">More Information</argument>
+                                <argument name="sort_order" xsi:type="number">-10</argument>
+                            </arguments>
+                        </block>
+
+                    </block>
+                </block>
+
+            </referenceContainer>
+
+            <block class="Magento\Catalog\Block\Widget\RecentlyViewed"
+                   name="recently_viewed_products.default_widget_pdp"
+                   ifconfig="catalog/recently_products/show_on_pdp"
+                   template="Magento_Catalog::product/widget/viewed/list.phtml">
+                <arguments>
+                    <argument name="show_buttons" xsi:type="string">add_to_cart,add_to_compare,add_to_wishlist</argument>
+                    <argument name="show_attributes" xsi:type="string">name,image,price,learn_more</argument>
+                </arguments>
+            </block>
+
+        </referenceContainer>
+
+        <move element="alert.urls" destination="product.info" as="alert.urls"/>
+        <move element="page.main.title" destination="product.detail.page" as="product.title" />
+
+        <referenceContainer name="before.body.end">
+            <block name="recently_viewed_products.register_view"
+                   template="Magento_Catalog::product/widget/viewed/js/register-viewed-product.phtml"
+                   ifconfig="catalog/recently_products/recently_viewed_enabled"/>
+        </referenceContainer>
+
+        <referenceBlock name="after.body.start">
+            <block name="product_breadcrumbs" class="Hyva\Theme\Block\Catalog\Breadcrumbs">
+                <arguments>
+                    <argument name="client_side_rendered_crumbs_template" xsi:type="string">Magento_Catalog::product/view/breadcrumbs.phtml</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,22 @@
+{
+    "name": "hyva-themes/magento2-reset-theme",
+    "description": "A theme that unsets all Magento 2 layout blocks. A real _blank_ theme.",
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": ">=7.3.0",
+        "magento/framework": ">=102.0.0"
+    },
+    "type": "magento2-theme",
+    "authors": [{
+        "name": "Hyvä Themes B.V.",
+        "email": "info@hyva.io"
+    }],
+    "license": "see LICENSE.md",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ]
+    }
+}

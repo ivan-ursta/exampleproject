@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceBlock name="page.wrapper">
+<!--        <block class="Magento\ProductRecommendationsLayout\Block\Fetcher" before="-" name="product_recommendations_fetcher" template="Magento_ProductRecommendationsLayout::recsFetcher.phtml" />-->
+    </referenceBlock>
+    <body>
+        <referenceBlock name="main.content">
+<!--            <block class="Magento\ProductRecommendationsLayout\Block\Renderer" after="-" name="product_recommendations_product_below_content" template="Magento_ProductRecommendationsLayout::layoutRenderer.phtml">-->
+<!--                <arguments>-->
+<!--                    <argument name="pagePlacement" xsi:type="string">below-main-content</argument>-->
+<!--                </arguments>-->
+<!--            </block>-->
+        </referenceBlock>
+    </body>
+</page>

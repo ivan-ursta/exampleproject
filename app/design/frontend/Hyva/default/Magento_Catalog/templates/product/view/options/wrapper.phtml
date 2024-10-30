@@ -1,0 +1,20 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+$childHtml = $block->getChildHtml('', true);
+?>
+<?php if (strlen($childHtml)): ?>
+    <div class="product-options-wrapper" id="product-options-wrapper">
+        <div class="fieldset" tabindex="0">
+            <?= /* @noEscape */ $childHtml ?>
+        </div>
+    </div>
+<?php endif; ?>

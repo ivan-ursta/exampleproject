@@ -1,0 +1,26 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+?>
+<div class="pt-6 pb-12">
+    <p>
+        <?= $escaper->escapeHtml(__('You have signed out and will be redirected to our homepage in 5 seconds.')) ?>
+    </p>
+    <p class="mt-6">
+        <?= $escaper->escapeHtml(__('Thank you for your visit, we\'re looking forward to see you again soon.')) ?>
+    </p>
+</div>
+<script>
+    setTimeout(function() {
+        location.href = "<?= $escaper->escapeJs($escaper->escapeUrl($block->getUrl())) ?>"
+    }, 5000);
+</script>

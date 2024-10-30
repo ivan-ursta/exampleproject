@@ -1,0 +1,36 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Bundle\Pricing\Price\TierPrice;
+use Magento\Framework\Escaper;
+use Magento\Framework\Pricing\Render\PriceBox;
+
+/** @var PriceBox $block */
+/** @var Escaper $escaper */
+
+/** @var TierPrice $tierPriceModel */
+$tierPriceModel = $block->getPrice();
+$tierPrices = $tierPriceModel->getTierPriceList();
+?>
+<?php if (count($tierPrices)): ?>
+    <ul class="<?= $escaper
+        ->escapeHtmlAttr(($block->hasListClass() ? $block->getListClass() : 'prices-tier items')) ?>"
+    >
+        <?php foreach ($tierPrices as $index => $price): ?>
+            <li class="item bg-container-lighter p-2 shadow mb-2 border-l-4 border-green-400">
+                <?= /* @noEscape */ __(
+                    'Buy %1 with %2 discount each',
+                    $price['price_qty'],
+                    '<strong class="benefit">' . round((int) $price['percentage_value']) . '%</strong>'
+                ); ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>

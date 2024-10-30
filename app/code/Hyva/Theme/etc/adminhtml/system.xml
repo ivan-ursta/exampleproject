@@ -1,0 +1,231 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="hyva_themes" sortOrder="999" translate="label">
+            <label>Hyva Themes</label>
+        </tab>
+
+        <section id="hyva_theme_google" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+            <label>Google Tag Manager</label>
+            <tab>hyva_themes</tab>
+            <resource>Magento_GoogleAnalytics::google</resource>
+
+            <group id="gtag" translate="label comment" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Google GTag</label>
+                <comment>(These settings can also be found in Sales > Google API > Google GTag)</comment>
+
+                    <field id="anonymize" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Anonymize IP</label>
+                        <comment>Only works on Hyvä Storefronts!</comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>google/gtag/anonymize</config_path>
+                    </field>
+
+                    <field id="lazyload" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Lazyload Tag Manager</label>
+                        <comment><![CDATA[Tagmanager will only load after user interaction. This improves performance, but makes your analytics less accurate!
+                            <br><br>Only works on Hyvä Storefronts!]]></comment>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>google/gtag/lazyload</config_path>
+                    </field>
+
+            </group>
+        </section>
+
+        <section id="hyva_theme_catalog" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="5" translate="label">
+            <label>Catalog</label>
+            <tab>hyva_themes</tab>
+            <resource>Magento_Catalog::config_catalog</resource>
+            <group id="hyva_breadcrumbs" translate="label comment" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Hyvä Client-Side Breadcrumbs Rendering</label>
+                <comment>Enabling client side breadcrumb rendering can impact frontend performance for large category trees.</comment>
+                <field id="client_side_enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable on Product Detail Pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/hyva_breadcrumbs/client_side_enable</config_path>
+                </field>
+            </group>
+            <group id="frontend" translate="label comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Compare Products</label>
+                <comment>(These settings can also be found in Catalog > Catalog > Storefront)</comment>
+                <field id="show_add_to_compare_on_product_page" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Add To Compare On Product Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/frontend/show_add_to_compare_on_product_page</config_path>
+                </field>
+                <field id="show_add_to_compare_in_list" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Add To Compare In Product List</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/frontend/show_add_to_compare_in_list</config_path>
+                </field>
+                <field id="show_sidebar_in_list" translate="label comment" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Compare Sidebar On Product List</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/frontend/show_sidebar_in_list</config_path>
+                </field>
+            </group>
+            <group id="recently_products" translate="label comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Recently Viewed Products</label>
+                <comment>(These settings can also be found in Catalog > Catalog > Recently Viewed/Compared Products)</comment>
+                <field id="recently_viewed_enabled" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Recently Viewed Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/recently_products/recently_viewed_enabled</config_path>
+                </field>
+                <field id="show_on_pdp" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Recently Viewed on Product Detail Pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/recently_products/show_on_pdp</config_path>
+                    <depends>
+                        <field id="recently_viewed_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="show_on_plp" translate="label comment" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Recently Viewed on Product Listing Pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>catalog/recently_products/show_on_plp</config_path>
+                    <depends>
+                        <field id="recently_viewed_enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="crosssell_products" translate="label comment" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Crosssell Products</label>
+                <field id="limit" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Max Product Count for Crosssell list</label>
+                    <comment>(By default the limit is 4)</comment>
+                    <validate>integer no-whitespace</validate>
+                </field>
+            </group>
+        </section>
+
+        <section id="hyva_theme_general" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="0" translate="label">
+            <label>General</label>
+            <tab>hyva_themes</tab>
+            <resource>Magento_Catalog::config_catalog</resource>
+            <group id="messages" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10" translate="label">
+                <label>Message Display</label>
+                <field id="success_message_timeout" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Success Message Default Timeout</label>
+                    <comment>The number of milliseconds, after which success messages disappear by default. Leave empty to disable automatic hiding.</comment>
+                </field>
+            </group>
+            <group id="alpine_defer" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="20" translate="label">
+                <label>Deferred Alpine.js Components</label>
+                <field id="defer_idle_timeout" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Defer until idle timeout</label>
+                    <comment>The number of milliseconds after which Alpine components deferred until the browser is idle will be initialized at the latest.</comment>
+                </field>
+                <field id="deferred_components" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="30" translate="label,comment">
+                    <label>Defer components</label>
+                    <comment><![CDATA[Valid defer until values: <strong>interact</strong>, <strong>intersect</strong>, <strong>idle</strong>, <strong>event:eventname</strong>.<br/>Configuring many deferred components here may increase the Total Blocking Time. Consider defering components by changing the PHTML templates instead.]]></comment>
+                    <frontend_model>Hyva\Theme\Block\Adminhtml\Form\Field\DeferredAlpineComponents</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+        </section>
+
+        <section id="hyva_theme_experimental" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="25" translate="label">
+            <label>Experimental</label>
+            <tab>hyva_themes</tab>
+            <resource>Magento_Catalog::config_catalog</resource>
+            <group id="feature_flag" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10" translate="label">
+                <label>Experimental Features</label>
+                <comment>Because of the reliance on experimental browser APIs, the Hyvä implementations may change or be removed entierly in future without notice.</comment>
+                <field id="speculationrules" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Prerender Speculation Rules</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[More information: <a href="https://developer.chrome.com/docs/web-platform/prerender-pages">developer.chrome.com/docs/web-platform/prerender-pages</a> and <a href="https://nitropack.io/blog/post/speculation-rules-api">nitropack.io/blog/post/speculation-rules-api</a>.<br/>Browser support: <a href="https://caniuse.com/mdn-html_elements_script_type_speculationrules">caniuse.com/mdn-html_elements_script_type_speculationrules</a>]]></comment>
+                </field>
+            </group>
+        </section>
+
+        <section id="catalog">
+            <group id="frontend">
+                <field id="show_add_to_compare_in_list" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Add To Compare In Product List</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="show_sidebar_in_list" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Compare Sidebar On Product List</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="show_add_to_compare_on_product_page" translate="label comment" type="select" sortOrder="115" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Add To Compare On Product Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="recently_products">
+                <field id="recently_viewed_enabled" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Recently Viewed Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="show_on_pdp" translate="label comment" type="select" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Recently Viewed on Product Detail Pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="recently_viewed_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="show_on_plp" translate="label comment" type="select" sortOrder="120" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show Recently Viewed on Product Listing Pages</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="recently_viewed_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="viewed_count" sortOrder="130">
+                    <depends>
+                        <field id="recently_viewed_enabled">1</field>
+                    </depends>
+                </field>
+
+                <field id="recently_viewed_lifetime" sortOrder="140">
+                    <depends>
+                        <field id="recently_viewed_enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+
+        <section id="google">
+            <group id="analytics">
+                <field id="type">
+                    <comment>Warning: Account type "Google Tag Manager" is a Adobe Commerce Feature is not implemented in Hyvä Theme!</comment>
+                </field>
+            </group>
+            <group id="gtag">
+                <group id="analytics4">
+                    <field id="type">
+                        <comment>Warning: Account type "Google Tag Manager" is a Adobe Commerce Feature is not implemented in Hyvä Theme!</comment>
+                    </field>
+                </group>
+
+                <field id="anonymize" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Anonymize IP</label>
+                    <comment>Only works on Hyvä Storefronts!</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>google/gtag/anonymize</config_path>
+                </field>
+
+                <field id="lazyload" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Lazyload Tag Manager</label>
+                    <comment><![CDATA[Tagmanager will only load after user interaction. This improves performance, but makes your analytics less accurate!
+                            <br><br>Only works on Hyvä Storefronts!]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>google/gtag/lazyload</config_path>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+

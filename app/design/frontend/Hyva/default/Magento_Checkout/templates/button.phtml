@@ -1,0 +1,25 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Checkout\Block\Onepage\Success;
+use Magento\Framework\Escaper;
+
+/** @var Success $block */
+/** @var Escaper $escaper */
+?>
+<?php if ($block->getCanViewOrder() && $block->getCanPrintOrder()): ?>
+    <a href="<?= $escaper->escapeUrl($block->getPrintUrl()) ?>"
+       class="ml-auto"
+       target="_blank"
+       rel="noopener">
+        <?= $escaper->escapeHtml(__('Print receipt')) ?>
+    </a>
+    <?= $block->getChildHtml() ?>
+<?php endif;?>

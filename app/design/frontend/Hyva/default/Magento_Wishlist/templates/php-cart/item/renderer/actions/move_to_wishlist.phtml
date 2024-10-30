@@ -1,0 +1,33 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsSolid;
+use Magento\Framework\Escaper;
+use Magento\Wishlist\Block\Cart\Item\Renderer\Actions\MoveToWishlist;
+
+/** @var MoveToWishlist $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var HeroiconsSolid $heroicons */
+$heroicons = $viewModels->require(HeroiconsSolid::class);
+
+?>
+<?php if ($block->isAllowInCart() && $block->isProductVisibleInSiteVisibility()): ?>
+    <button
+        type="button"
+        class="towishlist hover:text-red-600"
+        x-data
+        @click.prevent='hyva.postForm(<?= /* @noEscape */ $block->getMoveFromCartParams() ?>)'
+        title="<?= $escaper->escapeHtmlAttr(__('Move to Wishlist')) ?>"
+        aria-label="<?= $escaper->escapeHtmlAttr(__('Move to Wishlist')) ?>"
+    >
+        <?= $heroicons->heartHtml('', 24, 24, ['aria-hidden' => 'true']) ?>
+    </button>
+<?php endif ?>

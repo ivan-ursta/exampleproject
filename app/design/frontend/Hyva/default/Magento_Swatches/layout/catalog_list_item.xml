@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <block name="product.swatch.item" template="Magento_Swatches::product/swatch-item.phtml"/>
+        <block name="product.swatch.tooltip" template="Magento_Swatches::product/tooltip.phtml"/>
+
+        <referenceBlock name="category.product.type.details.renderers">
+            <block class="Magento\Swatches\Block\Product\Renderer\Listing\Configurable"
+                   name="category.product.type.details.renderers.configurable" as="configurable"
+                   template="Magento_Swatches::product/listing/renderer.phtml"
+                   ifconfig="catalog/frontend/show_swatches_in_product_list"
+            />
+        </referenceBlock>
+
+        <referenceBlock name="product_list_item">
+            <arguments>
+                <argument name="additional_item_renderer_processors" xsi:type="array">
+                    <item name="swatch_image_cache_key_info" xsi:type="object">Hyva\Theme\ViewModel\SwatchRenderer</item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="before.body.end">
+            <block name="product.info.options.configurable.js"
+                   as="options_configurable_js"
+                   template="Magento_ConfigurableProduct::product/view/type/options/js/configurable-options.phtml"
+            />
+            <block name="product.info.options.swatch.js"
+                   as="options_swatch_js"
+                   template="Magento_Swatches::product/js/swatch-options.phtml"
+            />
+        </referenceContainer>
+
+    </body>
+</page>

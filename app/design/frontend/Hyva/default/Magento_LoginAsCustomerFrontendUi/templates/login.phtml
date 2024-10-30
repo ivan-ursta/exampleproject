@@ -1,0 +1,44 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\SvgIcons;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\Escaper;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+/** @var SvgIcons $hyvaicons */
+$hyvaicons = $viewModels->require(SvgIcons::class);
+?>
+
+<div class="container">
+    <?= $hyvaicons->loaderHtml('', 64, 64, ['title' => $escaper->escapeHtml(__('Loading...'))]); ?>
+</div>
+
+<script>
+    "use strict";
+
+    // Invalidate existing private content
+    const browserStorage = hyva.getBrowserStorage();
+    if (browserStorage) {
+        browserStorage.removeItem('mage-cache-storage');
+    }
+
+    window.addEventListener("private-content-loaded", function(event) {
+        const sectionData = event.detail.data;
+        if (sectionData.loggedAsCustomer && sectionData.loggedAsCustomer.adminUserId) {
+            window.location.href = "<?= /* @noEscape */ $block->getUrl('customer/account/index') ?>"
+        }
+    });
+
+</script>

@@ -1,0 +1,253 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HeroiconsOutline;
+use Hyva\Theme\ViewModel\ReCaptcha;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Magento\SendFriend\Block\Send;
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/**
+ * @var Send $block
+ * @var SecureHtmlRenderer $secureRenderer
+ * @var Escaper $escaper
+ * @var ReCaptcha $recaptcha
+ * @var ViewModelRegistry $viewModels
+ * @var HeroiconsOutline $icons
+ */
+
+$icons = $viewModels->require(HeroiconsOutline::class);
+
+// Do not replace this with $viewModels->require(ReCaptcha::class); that might break the dependency
+// on Magento_ReCaptchaSendFriend module
+$recaptcha = $block->getData('viewModelRecaptcha');
+
+$formData = $block->getFormData();
+$recipients = $formData->getRecipientData() ?? '[]';
+?>
+<div class="flex flex-col lg:flex-row justify-between gap-4">
+    <div class="card w-full lg:w-2/3">
+        <form action="<?= $escaper->escapeUrl($block->getSendUrl()) ?>"
+              method="post"
+              id="product-sendtofriend-form"
+              class="form send friend"
+              x-data="initSendFriendForm()"
+              @submit.prevent="submitForm()"
+        >
+            <?= $block->getBlockHtml('formkey') ?>
+            <?= $recaptcha ? $recaptcha->getInputHtml(ReCaptcha::RECAPTCHA_FORM_ID_SEND_FRIEND) : '' ?>
+            <fieldset class="fieldset sender" id="sender_options">
+                <legend class="legend"><span><?= $escaper->escapeHtml(__('Sender')) ?></span></legend>
+                <br>
+                <div class="field sender required inline-block">
+                    <label for="sender-name" class="label"><span><?= $escaper->escapeHtml(__('Name')) ?></span></label>
+                    <div class="control">
+                        <input name="sender[name]" value="<?= $escaper->escapeHtmlAttr($block->getUserName()) ?>"
+                               title="<?= $escaper->escapeHtmlAttr(__('Name')) ?>"
+                               id="sender-name"
+                               type="text"
+                               class="form-input input-text"
+                               required
+                        />
+                    </div>
+                </div>
+
+                <div class="field email required inline-block">
+                    <label for="sender-email" class="label">
+                        <span><?= $escaper->escapeHtml(__('Email')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input name="sender[email]"
+                               value="<?= $escaper->escapeHtmlAttr($block->getEmail()) ?>"
+                               title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
+                               id="sender-email"
+                               type="email"
+                               class="form-input input-text"
+                               required
+                        />
+                    </div>
+                </div>
+
+                <div class="field text required">
+                    <label for="sender-message" class="label">
+                        <span>
+                            <?= $escaper->escapeHtml(__('Message')) ?>
+                        </span>
+                    </label>
+                    <div class="control">
+                        <textarea name="sender[message]"
+                                  class="form-input input-text mt-2 input input-light w-full h-48"
+                                  id="sender-message"
+                                  required
+                        ><?= $escaper->escapeHtml($block->getMessage()) ?></textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div x-data="rowHandler()">
+                <input name="recipient_data" :value="JSON.stringify(fields)" type="hidden"/>
+                <fieldset class="fieldset recipients">
+                    <legend class="legend">
+                    <span x-text="fields.length > 1 ? plural : single">
+                        <?= $escaper->escapeHtml(__('Invitee')) ?>
+                    </span>
+                    </legend>
+                    <br/>
+                    <div id="recipients-options">
+                        <fieldset class="fieldset">
+                            <template x-for="(field, index) in fields" :key="index">
+                                <div class="flex flex-row flex-wrap items-end justify-between gap-x-4 border-t border-container mb-2">
+                                    <div class="flex flex-row flex-wrap gap-x-4">
+                                    <div class="field name required inline-block">
+                                        <label :for="`recipients-name${index}`" class="label">
+                                            <span><?= $escaper->escapeHtml(__('Name')) ?></span>
+                                        </label>
+                                        <div class="control">
+                                            <input type="text"
+                                                   title="<?= $escaper->escapeHtmlAttr(__('Name')) ?>"
+                                                   class="form-input input-text"
+                                                   :id="`recipients-name${index}`"
+                                                   :name="`recipients[name][${index}]`"
+                                                   required
+                                                   x-model="field.name"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="field email required inline-block">
+                                        <label :for="`recipients-email${index}`" class="label">
+                                            <span><?= $escaper->escapeHtml(__('Email')) ?></span>
+                                        </label>
+                                        <div class="control">
+                                            <input title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
+                                                   :id="`recipients-email${index}`"
+                                                   :name="`recipients[email][${index}]`"
+                                                   type="email"
+                                                   class="form-input input-text"
+                                                   required
+                                                   validate
+                                                   x-model="field.email"
+                                            />
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="field">
+                                        <button type="button"
+                                                class="btn btn-secondary"
+                                                @click="removeField(index)"
+                                                :disabled="fields.length <= 1"
+                                                :class="{'opacity-25': fields.length <= 1}"
+                                        >
+                                            <?= $icons->trashHtml('h-6 w-6') ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </fieldset>
+                        <div x-show="fields.length < <?= (int)$block->getMaxRecipients(); ?>"
+                             class="border-t border-container"
+                        >
+                            <button type="button"
+                                    class="mt-4 btn btn-secondary"
+                                    @click="addNewField()"
+                            >
+                                + <?= $escaper->escapeHtml(__('Add Invitee')) ?>
+                            </button>
+                        </div>
+                    </div>
+
+                    <?= $block->getChildHtml('form_additional_info') ?>
+                </fieldset>
+            </div>
+            <?= $block->getChildHtml('captcha'); ?>
+            <div class="w-full grecaptcha-legal">
+                <?= $recaptcha ? $recaptcha->getLegalNoticeHtml(ReCaptcha::RECAPTCHA_FORM_ID_SEND_FRIEND) : '' ?>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit"
+                            class="action submit primary"
+                        <?php if (!$block->canSend()): ?>
+                            disabled
+                        <?php endif ?>
+                    >
+                        <span>
+                            <?= $escaper->escapeHtml(__('Send Email')) ?>
+                        </span>
+                    </button>
+                </div>
+                <div class="secondary">
+                    <a class="action back" href="#" onclick="history.back(); return false;" role="link"><span>
+                            <?= $escaper->escapeHtml(__('Back')) ?>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <script>
+                function rowHandler() {
+                    const recipients = <?= /** @noEscape */ $recipients ?>;
+
+                    return {
+                        fields: recipients.length === 0 ? [{name: '', email: ''}] : recipients,
+                        plural: '<?= $escaper->escapeJs(__('Invitees')) ?>',
+                        single: '<?= $escaper->escapeJs(__('Invitee')) ?>',
+                        addNewField() {
+                            this.fields.push({
+                                name: '',
+                                email: ''
+                            });
+                        },
+                        removeField(index) {
+                            this.fields.splice(index, 1);
+                        },
+                    }
+                }
+
+                function initSendFriendForm() {
+                    return {
+                        errors: 0,
+                        hasCaptchaToken: 0,
+                        displayErrorMessage: false,
+                        errorMessages: [],
+                        setErrorMessages(messages) {
+                            this.errorMessages = [messages]
+                            this.displayErrorMessage = this.errorMessages.length
+                        },
+                        submitForm() {
+                            // Do not remove $form. The variable is used in the recaptcha child template.
+                            const $form = document.querySelector('#product-sendtofriend-form');
+                            if ($form.querySelectorAll('input[id^="recipients-email"]').length === 0) {
+                                dispatchMessages([
+                                    {
+                                        type: "error",
+                                        text: "<?= $escaper->escapeJs(
+                                            __("Add one or more recipients before sending the message.")
+                                        ) ?>"
+                                    }
+                                ], 10000);
+                                return false;
+                            }
+                            <?= $recaptcha ? $recaptcha->getValidationJsHtml(ReCaptcha::RECAPTCHA_FORM_ID_SEND_FRIEND) : '' ?>
+
+                            if (this.errors === 0) {
+                                $form.submit();
+                            }
+                        }
+                    }
+                }
+            </script>
+        </form>
+    </div>
+    <div id="send-friend-product" class="w-full lg:w-1/3">
+        <?= $block->getChildHtml('product_item') ?>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\ReCaptcha;
+use Magento\Framework\Escaper;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Magento\Framework\View\Element\Template;
+
+/** @var Template $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+// reCaptcha v2 "I'm not a robot" form element
+
+$storeConfig = $viewModels->require(StoreConfig::class);
+$recaptcha   = $viewModels->require(ReCaptcha::class);
+$siteKey     = $storeConfig->getStoreConfig('recaptcha_frontend/type_recaptcha/public_key');
+
+if (!$siteKey) {
+    // No v2 checkbox google API credentials configured
+    return;
+}
+
+$inputElementId        = $block->getData('input_element_id');
+$instanceSuffix        = $recaptcha->calcJsInstanceSuffix($inputElementId ?: $block->getData('form_id') ?: 'x');
+$grecaptchaContainerId = "grecaptcha-container-$instanceSuffix";
+
+// Explicitly render the recaptcha, so it doesn't use the first .g-recaptcha on the page
+?>
+<div id="<?= $escaper->escapeHtmlAttr($grecaptchaContainerId) ?>" class="g-recaptcha"></div>
+<script>
+    'use strict';
+    (() => {
+        const containerId = '<?= $escaper->escapeJs($grecaptchaContainerId) ?>';
+        const initRecaptcha = () => {
+            grecaptchaV2LoadCallbacks.push(() => {
+                grecaptcha.render(containerId, {sitekey: '<?= $escaper->escapeJs($siteKey) ?>'});
+            });
+            const container = document.getElementById(containerId);
+            <?php /* Polyfill element.closest until 98% support is available (at 97.03% at the time of writing), see https://caniuse.com/?search=element.closest */ ?>
+            if (container && ! container.closest) {
+                container.closest = function (s) {
+                    let el = container;
+                    do {
+                        if (el.matches(s)) return el;
+                        el = el.parentElement || el.parentNode;
+                    } while (el !== null && el.nodeType === 1);
+                }
+            }
+            forceLoadRecaptchaScript(document.getElementById(containerId).closest('form'));
+        };
+
+        // Dynamically rendered forms (eg. via Alpine or Magewire) are rendered post DOMContentLoaded event trigger
+        if (document.readyState !== 'loading') {
+            // Wait for 'nextTick' for alpine/magewire to finish re-rendering markup
+            setTimeout(() => {
+                initRecaptcha();
+            });
+        } else {
+            document.addEventListener('DOMContentLoaded', initRecaptcha);
+        }
+    })();
+</script>

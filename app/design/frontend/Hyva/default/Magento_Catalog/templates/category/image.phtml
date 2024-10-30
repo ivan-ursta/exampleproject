@@ -1,0 +1,42 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Catalog\Block\Category\View;
+use Magento\Catalog\ViewModel\Category\Image;
+use Magento\Catalog\ViewModel\Category\Output;
+use Magento\Framework\Escaper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+/** @var Image $image */
+/** @var Output $categoryOutput */
+
+$image = $block->getImage();
+$categoryOutput = $block->getOutput();
+
+?>
+<?php
+$category = $block->getCurrentCategory();
+$imgHtml  = '';
+if ($imgUrl = $image->getUrl($category)) {
+    $width = $block->getVar('category_page_category_image/width');
+    $height = $block->getVar('category_page_category_image/height');
+    $imgHtml = '<div class="category-image"><img src="'
+        . $escaper->escapeUrl($imgUrl)
+        . '" alt="'
+        . $escaper->escapeHtmlAttr($category->getName())
+        . '" title="'
+        . $escaper->escapeHtmlAttr($category->getName())
+        . '" class="image" '
+        . ($width ? sprintf('width="%s"', $escaper->escapeHtmlAttr($width)) : '')
+        . ' '
+        . ($height ? sprintf('height="%s"', $escaper->escapeHtmlAttr($height)) : '')
+        . '"/></div>';
+    /* @noEscape */ echo $categoryOutput->categoryAttribute($category, $imgHtml, 'image');
+}
+?>

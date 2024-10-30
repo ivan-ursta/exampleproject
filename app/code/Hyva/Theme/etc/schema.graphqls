@@ -1,0 +1,35 @@
+# Hyvä Themes - https://hyva.io
+# Copyright © Hyvä Themes 2020-present. All rights reserved.
+# This product is licensed per Magento install
+# See https://hyva.io/license
+
+interface CartItemInterface {
+    prices: CartItemPrices @resolver(class: "\\Hyva\\Theme\\Model\\Resolver\\CartItemPrices")
+    product_type: String! @resolver(class: "\\Hyva\\Theme\\Model\\Resolver\\CartItemType")
+    errors: String @doc(description: "Errors assigned to this quote item")
+}
+
+type CartItemPrices {
+    price_incl_tax: Money!
+    row_total_incl_tax: Money!
+}
+
+type Query {
+    cachedCurrency: Currency
+        @resolver(class: "Magento\\DirectoryGraphQl\\Model\\Resolver\\Currency")
+        @doc(description: "The cachedCurrency query returns information about store currency and contains a 'config' cache key.")
+        @cache(cacheIdentity: "Hyva\\Theme\\Model\\Resolver\\ConfigIdentity")
+}
+
+interface ProductInterface {
+    visibility: Int @doc(description: "The visibility assigned to the product.")
+    status: Int @doc(description: "The status assigned to the product, 0 for disabled, 1 for enabled.")
+}
+
+type SelectedCustomizableOptionValue {
+    id: Int!
+    label: String!
+    value: String!
+    has_file: Boolean
+    price: CartItemSelectedOptionValuePrice!
+}

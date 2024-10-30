@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="after.body.start">
+            <block class="Magento\Framework\View\Element\FormKey" name="formkey" />
+            <block class="Magento\Theme\Block\Html\Notices" name="global_notices" template="Magento_Theme::html/notices.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="page.messages">
+            <block class="Magento\Framework\View\Element\Messages"
+                   name="messages"
+                   as="messages"
+                   template="Magento_Theme::messages.phtml"
+            />
+        </referenceContainer>
+
+        <referenceContainer name="main.content">
+            <block name="skip_to_content.target" before="-" template="Magento_Theme::html/skiptarget.phtml">
+                <arguments>
+                    <argument name="target_id" xsi:type="string">contentarea</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <referenceContainer name="header.container">
+            <block name="skip_to_content" template="Magento_Theme::html/skip.phtml" before="-">
+                <arguments>
+                    <argument name="target" xsi:type="string">contentarea</argument>
+                    <argument name="label" translate="true" xsi:type="string">Skip to Content</argument>
+                </arguments>
+            </block>
+            <block name="header-content" template="Magento_Theme::html/header.phtml">
+                <block class="Magento\Theme\Block\Html\Header\Logo" name="logo">
+                    <arguments>
+                        <argument name="logoPathResolver" xsi:type="object">Hyva\Theme\ViewModel\Logo\LogoPathResolver</argument>
+                        <!-- These values are used if no width or height is set in the adminhtml theme configuration -->
+                        <argument name="logo_width" xsi:type="number">189</argument>
+                        <argument name="logo_height" xsi:type="number">64</argument>
+                    </arguments>
+                </block>
+                <block name="header-search" template="Magento_Theme::html/header/search-form.phtml"/>
+                <block name="cart-drawer" template="Magento_Theme::html/cart/cart-drawer.phtml" ifconfig="checkout/sidebar/display">
+                    <block name="cart-drawer-loading" as="loading" template="Hyva_Theme::ui/loading.phtml"/>
+                    <container name="extra_actions"/>
+                    <container name="cart-drawer.top"/>
+                    <container name="cart-drawer.items.before"/>
+                    <container name="cart-drawer.totals.before"/>
+                    <container name="cart-drawer.bottom"/>
+                </block>
+
+                <block name="topmenu_generic"
+                       as="topmenu"
+                       template="Magento_Theme::html/header/topmenu.phtml"
+                       ttl="3600"
+                >
+                    <arguments>
+                        <argument name="cache_lifetime" xsi:type="string">3600</argument>
+                    </arguments>
+                    <block name="topmenu_mobile"
+                           as="topmenu.mobile"
+                           template="Magento_Theme::html/header/menu/mobile.phtml"
+                    ></block>
+
+                    <block name="topmenu_desktop"
+                           as="topmenu.desktop"
+                           template="Magento_Theme::html/header/menu/desktop.phtml"
+                    ></block>
+                </block>
+                <container name="header-content.additional" as="additional" />
+            </block>
+        </referenceContainer>
+
+        <referenceContainer name="top.container">
+            <block class="Magento\Theme\Block\Html\Breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
+        </referenceContainer>
+
+        <referenceContainer name="columns.top">
+            <block class="Magento\Theme\Block\Html\Title" name="page.main.title" template="Magento_Theme::html/title.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="footer">
+            <block name="footer-content" template="Magento_Theme::html/footer.phtml">
+                <block name="footer-static-links" template="Magento_Theme::html/footer/links.phtml"/>
+                <block class="Magento\Cms\Block\Block" name="footer-cms-content">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">footer_content</argument>
+                    </arguments>
+                </block>
+                <block
+                    class="Magento\Theme\Block\Html\Footer"
+                    name="footer-copyright"
+                    template="Magento_Theme::html/footer/copyright.phtml"
+                    as="copyright"
+                />
+            </block>
+        </referenceContainer>
+
+        <referenceContainer name="after.body.start">
+            <block class="Magento\Framework\View\Element\Js\Components" name="head.components" as="components" template="Magento_Theme::html/container.phtml"/>
+            <block name="mobile-safari-bug-workaround" template="Magento_Theme::html/mobile-safari-bug-workaround.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Theme\Block\Html\Footer" name="absolute_footer" template="Magento_Theme::html/absolute_footer.phtml" />
+        </referenceContainer>
+
+        <block name="head.additional" as="head.additional" template="Magento_Theme::html/container.phtml"/>
+    </body>
+</page>

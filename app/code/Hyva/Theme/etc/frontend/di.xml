@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\App\FrontControllerInterface">
+        <!--
+        /**
+          * Adds a 'X-Generated-By: Hyvä Themes' header to frontend requests
+          * Removing or altering the header message violates the terms of usage.
+          */
+        -->
+        <plugin name="front-controller-hyva-header" type="Hyva\Theme\Plugin\FrontController\HyvaHeaderPlugin"/>
+    </type>
+
+    <type name="Magento\Customer\Controller\Section\Load">
+        <plugin name="customer_controller_section_load" type="Hyva\Theme\Plugin\Customer\SectionLoadPlugin"/>
+    </type>
+
+    <type name="Magento\Catalog\CustomerData\CompareProducts">
+        <plugin name="add_images" type="Hyva\Theme\Plugin\CompareCustomerData\AddImages" sortOrder="100"/>
+    </type>
+
+    <type name="Magento\PageCache\Controller\Block\Esi">
+        <plugin name="add_view_model_cache_tags" type="Hyva\Theme\Plugin\PageCache\AddViewModelCacheTagesToEsiResponse"/>
+    </type>
+
+    <type name="Magento\Framework\View\LayoutInterface">
+        <plugin name="save_double_cached_block_cache_tags" type="Hyva\Theme\Plugin\PageCache\SaveTagsForCachedBlocks"/>
+    </type>
+
+    <type name="Magento\Theme\Controller\Result\JsFooterPlugin">
+        <plugin name="disable_move_js_to_footer_on_some_pages" type="Hyva\Theme\Plugin\Theme\DisableJsFooterPlugin"/>
+    </type>
+
+    <type name="Hyva\Theme\Plugin\Theme\DisableJsFooterPlugin">
+        <arguments>
+            <argument name="disableMoveToFooterOnActions" xsi:type="array">
+                <item name="php-cart-route" xsi:type="string">checkout_cart_index</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- replace the convertBackgroundImages plugin with our own implementation, because it breaks AlpineJS attributes -->
+    <type name="Magento\PageBuilder\Plugin\Filter\TemplatePlugin">
+        <plugin name="convertBackgroundImages_override" type="Hyva\Theme\Plugin\PageBuilder\OverrideTemplatePlugin"/>
+    </type>
+
+    <!-- Add workaround for baseOldPrice missing in Magento versiony < 2.4.2 -->
+    <type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
+        <plugin name="polyfill_base_old_price" type="Hyva\Theme\Plugin\BaseOldPricePolyfill\AddBaseOldPriceToConfigurableProductOptions"/>
+    </type>
+    <type name="Magento\ConfigurableProduct\Model\Product\Type\Configurable\Variations\Prices">
+        <plugin name="polyfill_base_old_price" type="Hyva\Theme\Plugin\BaseOldPricePolyfill\AddBaseOldPriceToConfigurableProductPriceVariations"/>
+    </type>
+    <type name="Magento\Catalog\Block\Product\View">
+        <plugin name="polyfill_base_old_price" type="Hyva\Theme\Plugin\BaseOldPricePolyfill\AddBaseOldPriceToProductViewBlockJson"/>
+    </type>
+
+    <preference for="Hyva\Theme\Model\Modal\ModalBuilderInterface" type="Hyva\Theme\Model\Modal\ModalBuilder"/>
+    <preference for="Hyva\Theme\Model\Modal\ConfirmationBuilderInterface" type="Hyva\Theme\Model\Modal\ConfirmationBuilder"/>
+    <preference for="Hyva\Theme\Model\Modal\ModalInterface" type="Hyva\Theme\Model\Modal\ModalBuilder"/>
+
+    <preference for="Magento\Framework\View\Model\Layout\Merge" type="Hyva\Theme\Framework\View\Model\Layout\Merge"/>
+
+    <type name="Hyva\Theme\ViewModel\ProductList">
+        <arguments>
+            <argument name="collectionProcessor" xsi:type="object">Magento\Catalog\Model\Api\SearchCriteria\ProductCollectionProcessor</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Helper\Product\View">
+        <plugin name="update_canonical_page_param_product_review" type="Hyva\Theme\Plugin\Catalog\Helper\Product\ProductReviewPaginationCanonicalUrlFixPlugin" />
+    </type>
+
+    <type name="Magento\Customer\Controller\Ajax\Login">
+        <!-- The sorOrder is so it runs after \Hyva\ThemeFallback\Plugin\ThemeFallbackPlugin that set's the configured theme -->
+        <plugin name="hyva_theme" type="Hyva\Theme\Plugin\Customer\AjaxLoginFormkeyValidationPlugin" sortOrder="30"/>
+    </type>
+
+    <type name="Hyva\Theme\ViewModel\CustomerSectionData">
+        <arguments>
+            <!-- Specifying `true` will allow the section to be cached in the FPC. Only use it with sections without PII. -->
+            <!-- When a JSON string is specified, it is used as the section default value. -->
+            <!-- Any section that is not listed will be replaced with an empty array as the default value. -->
+            <argument name="defaultSectionDataKeys" xsi:type="array">
+                <item name="directory-data" xsi:type="boolean">true</item>
+                <item name="wishlist" xsi:type="string">{"items": []}</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

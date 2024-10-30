@@ -1,0 +1,74 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\ConfigurableProduct\Block\Product\View\Type\Configurable;
+use Magento\Framework\Escaper;
+
+/** @var Configurable $block */
+/** @var Escaper $escaper */
+
+$product = $block->getProduct();
+$productId = $product->getId();
+$attributes = $block->decorateArray($block->getAllowAttributes());
+?>
+<?php if ($product->isSaleable() && count($attributes)): ?>
+
+    <script>
+        function initConfigurableDropdownOptions_<?= (int) $productId ?>() {
+            return initConfigurableOptions(
+                '<?= (int) $productId ?>',
+                <?= /* @noEscape */ $block->getJsonConfig() ?>
+            );
+        }
+    </script>
+
+    <div x-data="initConfigurableDropdownOptions_<?= (int) $productId ?>()"
+         x-init="init()"
+         @private-content-loaded.window="onGetCartData($event.detail.data)"
+         class="mb-6"
+    >
+        <h2 class="text-gray-900 text-xl title-font font-medium mb-4">
+            <?= $escaper->escapeHtml(__('Options')) ?>
+        </h2>
+
+        <?php foreach ($attributes as $attribute): ?>
+        <div class="flex flex-col sm:flex-row border-t last:border-b border-gray-300 py-2 w-full items-center">
+
+            <label class="w-full sm:w-1/2 text-left text-gray-700 label"
+                   for="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
+            >
+                <span>
+                    <?= $escaper->escapeHtml($attribute->getProductAttribute()->getStoreLabel()) ?>
+                </span>
+            </label>
+            <div class="w-full sm:ml-2 sm:w-1/2 text-left text-gray-900">
+                <select name="super_attribute[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>]"
+                        id="attribute<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>"
+                        class="form-select super-attribute-select max-w-full"
+                        x-on:change="changeOption(<?= (int) $attribute->getAttributeId() ?>, event.target.value)"
+                        required>
+                    <option value="">
+                        <?= $escaper->escapeHtml(__('Choose an Option...')) ?>
+                    </option>
+                    <template
+                        x-for="(item, index) in getAllowedAttributeOptions(<?= (int) $attribute->getAttributeId() ?>)"
+                        :key="item.id"
+                    >
+                        <option
+                            :value="item.id"
+                            x-html="getAttributeOptionLabel(item)"
+                            :selected="selectedValues[<?= $escaper->escapeHtmlAttr($attribute->getAttributeId()) ?>] ===
+                                item.id">
+                        </option>
+                    </template>
+                </select>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif;?>

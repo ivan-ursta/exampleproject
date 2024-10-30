@@ -1,0 +1,73 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<script>
+    'use strict';
+    function dispatchMessages(messages, hideAfter) {
+        const messagesEvent = new CustomEvent("messages-loaded", {
+            detail: {
+                messages: messages,
+                hideAfter: hideAfter
+            }
+        });
+        window.dispatchEvent(messagesEvent);
+    }
+
+<?php
+    /**
+     * The `hyva` JS namespace is being set by Hyva_Theme/src/view/frontend/templates/page/js/hyva.phtml
+     * and should be included through Hyva_Theme/src/view/frontend/layout/default_hyva.xml
+     */
+?>
+    if (typeof hyva === 'undefined' || (!hyva.getBrowserStorage || !hyva.getCookie || !hyva.setCookie)) {
+        console.warn("Hyvä helpers are not loaded yet. Make sure they are included before this script");
+    }
+
+    (function( hyva, undefined ) {
+
+        hyva.initFormKey = () => {
+            const inputSelector = 'input[name="form_key"]',
+                formKey = hyva.getFormKey();
+
+            Array.from(document.querySelectorAll(inputSelector)).map(function (input) {
+                input.value = formKey
+            });
+        }
+
+        hyva.initMessages = () => {
+            try {
+                const messages = hyva.getCookie('mage-messages');
+                window.mageMessages = messages ? JSON.parse(decodeURIComponent(messages).replace(/\+/g, ' ')) : [];
+
+                dispatchMessages(window.mageMessages);
+
+                <?php
+                /**
+                 * In \Magento\Theme\Controller\Result\MessagePlugin::setCookie
+                 * the cookie-domain is not set. Therefore, we need to skip it
+                 * here as well.
+                 */
+                ?>
+                // empty `mage-messages` cookie
+                const skipSetDomain = true;
+                hyva.setCookie('mage-messages','', -1, skipSetDomain);
+
+            } catch (error) {
+                console.warn('Error parsing Cookie Messages:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', hyva.initFormKey);
+        hyva.alpineInitialized(hyva.initMessages)
+
+    }( window.hyva = window.hyva || {} ));
+</script>

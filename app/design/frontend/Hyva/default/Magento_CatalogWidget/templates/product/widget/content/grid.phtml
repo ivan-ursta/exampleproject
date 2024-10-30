@@ -1,0 +1,57 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\ProductListItem;
+use Hyva\Theme\ViewModel\ProductPage;
+use Magento\Catalog\Block\Product\ListProduct;
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
+use Magento\Framework\Escaper;
+
+/** @var ListProduct $block */
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+
+$productViewModel         = $viewModels->require(ProductPage::class);
+$productListItemViewModel = $viewModels->require(ProductListItem::class);
+
+?>
+<?php if ($block->getProductCollection() && $block->getProductCollection()->getSize()): ?>
+    <?php
+    $type = 'widget-product-grid';
+    $mode = 'grid';
+    $image = 'new_products_content_widget_grid';
+    $items = $block->getProductCollection()->getItems();
+    $templateType = ReviewRendererInterface::SHORT_VIEW;
+    $description = false;
+    ?>
+    <div class="block widget block-products-list <?= /* @noEscape */ $mode ?>">
+        <?php if ($block->getTitle()): ?>
+            <div class="block-title">
+                <strong><?= $escaper->escapeHtml(__($block->getTitle())) ?></strong>
+            </div>
+        <?php endif ?>
+        <div class="block-content">
+            <div class="mx-auto grid gap-4 <?= $mode === 'grid' ? 'sm:grid-cols-2 lg:grid-cols-4' : 'grid-cols-1' ?>">
+                <?php foreach ($items as $item): ?>
+                    <?= $productListItemViewModel->getItemHtml(
+                        $item,
+                        $block,
+                        $mode,
+                        $templateType,
+                        $image,
+                        $description
+                    ) ?>
+                <?php endforeach ?>
+            </div>
+            <?= $block->getPagerHtml() ?>
+        </div>
+    </div>
+<?php endif ?>

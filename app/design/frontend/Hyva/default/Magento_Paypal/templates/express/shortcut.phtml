@@ -1,0 +1,80 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Paypal\Block\Express\Shortcut;
+use Magento\Paypal\Block\Express\InContext\Minicart\SmartButton;
+
+/** @var Shortcut|SmartButton $block */
+/** @var Escaper $escaper */
+
+?>
+<?php
+$labelPosition = '';
+if ($block instanceof Shortcut) {
+    if ($block->isOrPositionBefore()) {
+        $labelPosition = ' before';
+    } elseif ($block->isOrPositionAfter()) {
+        $labelPosition = ' after';
+    }
+}
+$shortcutHtmlId = $escaper->escapeHtml($block->getShortcutHtmlId());
+$isInCatalogProduct = (bool) $block->getIsInCatalogProduct();
+
+?>
+<div class="paypal checkout <?= /* @noEscape */ $labelPosition ?> paypal-logo <?= /* @noEscape */ $shortcutHtmlId ?>"
+>
+    <input type="image"
+           x-data="initPayPalExpress(<?= $isInCatalogProduct ? 'true' : 'false' ?>)"
+           @click.prevent="submitForm()"
+           src="<?= $escaper->escapeUrl($block->getImageUrl()) ?>"
+           alt="<?= $escaper->escapeHtmlAttr(__('Checkout with PayPal')) ?>"
+           title="<?= $escaper->escapeHtmlAttr(__('Checkout with PayPal')) ?>"/>
+    <?php if ($block->getAdditionalLinkImage()): ?>
+        <?php $linkImage = $block->getAdditionalLinkImage(); ?>
+        <a href="<?= $escaper->escapeUrl($linkImage['href']) ?>">
+            <img loading="lazy" src="<?= $escaper->escapeHtmlAttr($linkImage['src']) ?>" />
+        </a>
+    <?php endif; ?>
+</div>
+
+<script>
+    function initPayPalExpress(isInCatalogProduct) {
+        return {
+            isInCatalogProduct,
+            returnUrlId: 'return_url',
+            submitForm() {
+                if (this.isInCatalogProduct) {
+                    this.submitFromCatalog();
+                }
+                if (!this.isInCatalogProduct) {
+                    this.submitFromCart();
+                }
+            },
+            submitFromCatalog() {
+                const formParentId = 'product_addtocart_form';
+                const returnUrlValue = "<?= $escaper->escapeUrl($block->getCheckoutUrl()) ?>";
+                if (!document.getElementById(this.returnUrlId)) {
+                    const elReturnUrl = document.createElement('input');
+                    elReturnUrl.setAttribute('type', 'hidden');
+                    elReturnUrl.setAttribute('name', 'return_url');
+                    elReturnUrl.setAttribute('value', returnUrlValue);
+                    elReturnUrl.setAttribute('id', this.returnUrlId);
+                    document.forms[formParentId].appendChild(elReturnUrl);
+                }
+                else {
+                    document.getElementById(this.returnUrlId).value = returnUrlValue;
+                }
+                document.forms[formParentId].submit();
+            },
+            submitFromCart() {
+                window.location = "<?= $escaper->escapeUrl($block->getCheckoutUrl()) ?>";
+            }
+        }
+    }
+</script>

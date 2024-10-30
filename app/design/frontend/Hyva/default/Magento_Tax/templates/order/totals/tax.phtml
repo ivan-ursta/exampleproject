@@ -1,0 +1,55 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Magento\Tax\Block\Sales\Order\Tax;
+use Magento\Tax\Helper\Data as TaxHelper;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var Tax $block */
+/** @var Escaper $escaper */
+
+$order    = $block->getOrder();
+$source   = $block->getSource();
+$fullInfo = $this->helper(TaxHelper::class)->getCalculatedTaxes($source);
+
+/**
+ * This template is used to render the tax total within the order totals in the storefront.
+ * It is not used for order emails, which use Magento_Tax::order/tax.phtml (not part of the hyva-default-theme).
+ */
+?>
+<?php if ($fullInfo && $block->displayFullSummary()): ?>
+    <?php foreach ($fullInfo as $info): ?>
+        <?php
+        $percent = $info['percent'];
+        $amount = $info['tax_amount'];
+        $baseAmount = $info['base_tax_amount'];
+        $title = $info['title'];
+        ?>
+        <div>
+            <?= $escaper->escapeHtml($title) ?>
+            <?php if ($percent !== null): ?>
+                (<?= (float)$percent ?>%)
+            <?php endif; ?>
+        </div>
+        <div>
+            <?= /* @noEscape */ $order->formatPrice($amount) ?>
+        </div>
+    <?php endforeach; ?>
+<?php else: ?>
+    <div>
+        <?= $escaper->escapeHtml(__('Tax')) ?>
+    </div>
+    <div>
+        <?= /* @noEscape */ $order->formatPrice($source->getTaxAmount()) ?>
+    </div>
+<?php endif; ?>

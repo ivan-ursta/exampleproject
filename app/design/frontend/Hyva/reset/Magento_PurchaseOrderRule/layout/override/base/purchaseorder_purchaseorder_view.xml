@@ -1,0 +1,32 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="purchase.order.view">
+<!--            <block class="Magento\PurchaseOrderRule\Block\PurchaseOrder\ApprovalFlow"-->
+<!--                   name="purchase.order.rules.view.approval.flow"-->
+<!--                   as="approval-flow"-->
+<!--                   template="Magento_PurchaseOrderRule::purchaseorder/view/approval-flow.phtml">-->
+<!--                <arguments>-->
+<!--                    <argument name="code" xsi:type="string">approval-flow</argument>-->
+<!--                    <argument name="title" translate="true" xsi:type="string">Approval Flow</argument>-->
+<!--                    <argument name="sort_order" xsi:type="string">15</argument>-->
+<!--                </arguments>-->
+<!--            </block>-->
+        </referenceBlock>
+        <referenceContainer name="content">
+            <referenceBlock name="purchase.order.info.buttons.additional">
+<!--                <block class="Magento\PurchaseOrderRule\Block\PurchaseOrder\Info\Validate"-->
+<!--                       name="purchase.order.info.validate"-->
+<!--                       template="Magento_PurchaseOrderRule::purchaseorder/view/info/validate_button.phtml"/>-->
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,38 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+use Magento\Customer\Block\Widget\Company;
+use Magento\Customer\Helper\Address as AddressHelper;
+use Magento\Framework\Escaper;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+
+/** @var Escaper $escaper */
+/** @var Company $block */
+
+$validationClass = $this->helper(AddressHelper::class)->getAttributeValidationClass('company');
+
+?>
+<div class="field field-reserved company <?= $block->isRequired() ? 'required' : '' ?>">
+    <label for="company" class="label">
+        <span><?= $escaper->escapeHtml(__('Company')) ?></span>
+    </label>
+    <div class="control">
+        <input type="text"
+               name="company"
+               id="company"
+               <?php if ($block->isRequired()): ?>
+                   required
+               <?php endif; ?>
+               value="<?= $escaper->escapeHtmlAttr($block->getCompany()) ?>"
+               title="<?= $escaper->escapeHtmlAttr(__('Company')) ?>"
+               class="form-input <?= $escaper->escapeHtmlAttr($validationClass) ?>"
+         >
+    </div>
+</div>

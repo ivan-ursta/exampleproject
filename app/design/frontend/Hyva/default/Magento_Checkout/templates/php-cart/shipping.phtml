@@ -1,0 +1,511 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Cart\TotalsOutput;
+use Magento\Checkout\Block\Cart\Shipping;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var Shipping $block */
+/** @var ViewModelRegistry $viewModels */
+/** @var TotalsOutput $totalsOutput */
+$totalsOutput = $viewModels->require(TotalsOutput::class);
+
+?>
+<script>
+    function initShippingEstimation(){
+        return {
+            showEstimateShipping: false,
+            cart: false,
+            cartIsVirtual: <?= (int) $block->getQuote()->isVirtual() ?>,
+            customer: false,
+            availableShippingMethods: [],
+            isLoading: false,
+            cartData: {
+                address: {
+                    countryId: window.checkoutConfig.defaultCountryId,
+                    regionId: window.checkoutConfig.defaultRegionId,
+                    postcode: window.checkoutConfig.defaultPostcode
+                },
+                cartVersion: Math.floor(Date.now()/1000),
+                rates: [],
+                shippingCarrierCode: null,
+                shippingMethodCode: null,
+            },
+            checkoutData: {
+                shippingAddressFromData: {
+                    country_id: window.checkoutConfig.defaultCountryId,
+                    region: window.checkoutConfig.defaultRegionId,
+                    postcode: window.checkoutConfig.defaultPostcode
+                }
+            },
+            directoryData: false,
+            shippingMethod: false,
+            init() {
+                const selectedShippingMethod = window.checkoutConfig.selectedShippingMethod;
+                if (selectedShippingMethod) {
+                    this.shippingMethod = `${selectedShippingMethod.carrier_code}_${selectedShippingMethod.method_code}`
+                }
+
+                this.showEstimateShipping = JSON.parse(
+                    hyva.getBrowserStorage().getItem('hyva.showEstimateShipping')
+                );
+            },
+            toggleEstimateShipping() {
+                this.showEstimateShipping = !this.showEstimateShipping;
+
+                hyva.getBrowserStorage().setItem('hyva.showEstimateShipping', this.showEstimateShipping);
+
+                if (this.showEstimateShipping) {
+                    this.fetchShippingMethods();
+                }
+            },
+            abortShippingController: null,
+            fetchShippingMethods() {
+
+                if (this.abortShippingController) {
+                    this.abortShippingController.abort();
+                }
+                this.isLoading = true;
+                this.$dispatch('update-shipping-method-start', {});
+
+                const path = this.customer && this.customer.fullname
+                    ? '/V1/carts/mine/estimate-shipping-methods'
+                    : '/V1/guest-carts/' + this.cart.cartId + '/estimate-shipping-methods';
+
+                // ensure a new controller is used for the new request
+                this.abortShippingController = new AbortController();
+
+                fetch(BASE_URL + 'rest/' + CURRENT_STORE_CODE + path + '?form_key=' + hyva.getFormKey(), {
+                    signal: this.abortShippingController.signal,
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        address: this.cartData.address
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        this.availableShippingMethods = result;
+
+                        if(!this.availableShippingMethods.find(method => { return method.carrier_code + '_' + method.method_code === this.shippingMethod})) {
+                            this.$dispatch('update-shipping-method', {method: false});
+                            this.shippingMethod = false;
+                        }
+                    })
+                    .catch(this.displayError)
+                    .finally(() => {
+                            this.$dispatch('update-shipping-method-end', {});
+                            this.fetchTotals();
+                            this.isLoading = false;
+                        }
+                    );
+            },
+            getEstimatedShippingRateCarriers() {
+                return Array.from(new Set(this.availableShippingMethods.map(rate => rate.carrier_title)));
+            },
+            getRatesForCarrier(carrierTitle) {
+                return this.availableShippingMethods.filter(rate => rate.carrier_title === carrierTitle);
+            },
+            updateShippingMethod() {
+                this.$dispatch('update-shipping-method', {method: this.shippingMethod});
+                this.fetchTotals();
+            },
+            abortTotalsController: null,
+            fetchTotals() {
+                if (this.abortTotalsController) {
+                    this.abortTotalsController.abort();
+                }
+                this.$dispatch('update-totals-start', {});
+
+                let carrierCode = null;
+                let methodCode = null;
+
+                if (this.shippingMethod) {
+                    const splitShippingMethod = this.shippingMethod.split('_');
+                    carrierCode = splitShippingMethod[0];
+                    // methodCode might contain multiple underscores
+                    methodCode = this.shippingMethod.replace(carrierCode + '_', '') || null;
+                }
+                const path = this.customer && this.customer.fullname
+                    ? '/V1/carts/mine/totals-information'
+                    : '/V1/guest-carts/' + this.cart.cartId + '/totals-information';
+
+                // ensure a new controller is used for the new request
+                this.abortTotalsController = new AbortController();
+
+                fetch(BASE_URL + 'rest/' + CURRENT_STORE_CODE + path + '?form_key=' + hyva.getFormKey(), {
+                    signal: this.abortTotalsController.signal,
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        addressInformation: {
+                            shipping_carrier_code: carrierCode,
+                            shipping_method_code: methodCode,
+                            address: this.cartData.address
+                        }
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        <?php /* Update total titles to value from window.checkoutConfig so theme translations are applied */ ?>
+                        if (window.checkoutConfig && window.checkoutConfig.totalsData) {
+                            const checkoutConfigTotals = window.checkoutConfig.totalsData.total_segments || [];
+                            result.total_segments.forEach(total => {
+                                const totalFromConfig = checkoutConfigTotals.find(fromConfig => fromConfig.code === total.code)
+                                totalFromConfig && (total.title = totalFromConfig.title);
+                            })
+                        }
+                        return result;
+                    })
+                    .then(result => {
+                        this.$dispatch('update-totals', {data: result});
+                    })
+                    .catch(this.displayError)
+                    .finally(() => {
+                            this.$dispatch('update-totals-end', {});
+                        }
+                    );
+            },
+            receiveCustomerData(data) {
+                if (data.cart) {
+                    this.cart = data.cart;
+                }
+                if (data.customer) {
+                    this.customer = data.customer;
+                }
+                if (data['directory-data']) {
+                    this.directoryData = data['directory-data'];
+                }
+                if (data['cart-data']) {
+                    this.cartData = data['cart-data'];
+                }
+                if (data['checkout-data']) {
+                    this.checkoutData = data['checkout-data'];
+                    this.populateCartData();
+                }
+
+                if (this.showEstimateShipping) {
+                    this.fetchShippingMethods();
+                }
+            },
+            setCountry(countryId){
+                this.cartData.address = {
+                    countryId: countryId,
+                    region: "",
+                    postcode: null
+                }
+                this.checkoutData.shippingAddressFromData = {
+                    country_id: countryId,
+                    region: "",
+                    postcode: null
+                }
+
+                if (this.directoryData[countryId].regions) {
+                    this.cartData.address.regionCode = "";
+                    this.cartData.address.regionId = 0;
+
+                    this.checkoutData.shippingAddressFromData.region_code = "";
+                    this.checkoutData.shippingAddressFromData.region_id = 0;
+                }
+
+                this.saveToCustomerSectionData();
+                this.fetchShippingMethods();
+            },
+            setRegion(value, type){
+
+                if (type === 'select') {
+                    const countryId = this.cartData.address.countryId;
+                    const regionId = value || 0;
+                    const regionData = this.directoryData[countryId].regions[regionId] || { code: '', name: ''};
+
+                    this.cartData.address.regionId = regionId;
+                    this.cartData.address.regionCode = regionData.code;
+                    this.cartData.address.region = regionData.name;
+
+                    this.checkoutData.shippingAddressFromData.region_id = regionId;
+                    this.checkoutData.shippingAddressFromData.region_code = regionData.code;
+                    this.checkoutData.shippingAddressFromData.region = regionData.name;
+
+                } else {
+                    this.cartData.address.region = value;
+                    this.checkoutData.shippingAddressFromData.region = value;
+                }
+
+                this.saveToCustomerSectionData();
+                this.fetchShippingMethods();
+            },
+            setPostcode(value){
+                this.cartData.address.postcode = value;
+                this.checkoutData.shippingAddressFromData.postcode = value;
+
+                this.saveToCustomerSectionData();
+                this.fetchShippingMethods();
+            },
+            saveToCustomerSectionData(){
+                const browserStorage = hyva.getBrowserStorage();
+
+                const sectionData = JSON.parse(browserStorage.getItem('mage-cache-storage'));
+
+                if (!sectionData['checkout-data']) {
+                    sectionData['checkout-data'] = {};
+                }
+                if (!sectionData['cart-data']) {
+                    sectionData['cart-data'] = {};
+                }
+
+                sectionData['checkout-data'].shippingAddressFromData = this.checkoutData.shippingAddressFromData;
+                sectionData['cart-data'].address = this.cartData.address;
+
+                browserStorage.setItem('mage-cache-storage', JSON.stringify(sectionData));
+            },
+            populateCartData() {
+                const checkoutAddress = this.checkoutData && this.checkoutData.shippingAddressFromData || {};
+
+                if (Object.keys(checkoutAddress).length) {
+
+                    if(
+                        (checkoutAddress['country_id'] !== this.cartData.address.countryId) ||
+                        (checkoutAddress['region'] !== "" || checkoutAddress['region_id'] !== "" || checkoutAddress['postcode'] !== null)
+                    ) {
+                        this.cartData.address.countryId = checkoutAddress['country_id'];
+                        this.cartData.address.region = checkoutAddress['region'];
+                        this.cartData.address.postcode = checkoutAddress['postcode'];
+                    }
+                }
+            },
+            getSortedCountries(){
+                return Object.keys(this.directoryData)
+                    .filter(countryKey => countryKey !== 'data_id')
+                    .sort((a,b) => {
+                        if (this.directoryData[a].name < this.directoryData[b].name) {
+                            return -1
+                        }
+                        if (this.directoryData[a].name > this.directoryData[b].name) {
+                            return 1
+                        }
+                        return 0;
+                    }).map(countryId => {
+                        return {
+                            id: countryId,
+                            name: this.directoryData[countryId].name || countryId
+                        }
+                    });
+            },
+            getAvailableRegions() {
+                const countryId = this.cartData.address.countryId;
+
+                if (
+                    countryId &&
+                    this.directoryData[countryId] &&
+                    this.directoryData[countryId].regions
+                ){
+                    return Object.keys(this.directoryData[countryId].regions).map(regionId => {
+                        return {
+                            id: regionId,
+                            code: this.directoryData[countryId].regions[regionId].code,
+                            name: this.directoryData[countryId].regions[regionId].name
+                        }
+                    });
+                }
+                return [];
+            },
+            hasAvailableRegions() {
+                return this.cartData.address && this.cartData.address.countryId && this.getAvailableRegions().length
+            },
+            displayError(error) {
+                if (error.name !== 'AbortError') {
+                    console.error(error);
+                    typeof window.dispatchMessages !== "undefined" && window.dispatchMessages(
+                        [{
+                            type: "error",
+                            text: "<?= $escaper->escapeJs(__("Something went wrong. Please try again.")) ?>"
+                        }], 10000
+                    );
+                }
+            }
+        }
+    }
+</script>
+<div id="block-shipping"
+     class="flex flex-col pb-2 my-2 border-b-2 border-gray-300 estimate-shipping-form"
+     x-data="initShippingEstimation()"
+     @private-content-loaded.window="receiveCustomerData($event.detail.data)"
+>
+    <h3 class="title" id="block-shipping-title">
+        <button
+            @click="toggleEstimateShipping"
+            class="flex justify-between w-full font-semibold whitespace-nowrap cursor-pointer select-none text-primary-lighter"
+            id="shipping-estimate-toggle"
+            type="button"
+            :aria-expanded="showEstimateShipping"
+        >
+            <?= $block->getQuote()->isVirtual()
+                ? $escaper->escapeHtml(__('Estimate Tax'))
+                : $escaper->escapeHtml(__('Estimate Shipping and Tax'))
+            ?>
+            <span :class="{ 'rotate-180' : showEstimateShipping}" class="block transform rotate-180">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                    width="25"
+                    height="25"
+                    aria-hidden="true"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </span>
+        </button>
+    </h3>
+    <div id="block-summary"
+         class="content my-4 card"
+         data-role="content"
+         aria-labelledby="block-shipping-heading"
+         x-cloak
+         x-show="showEstimateShipping"
+    >
+        <form method="post" id="shipping-zip-form" @submit.prevent="fetchTotals()">
+            <fieldset class="fieldset estimate" aria-labelledby="block-shipping-title">
+                <p class="field note">
+                    <?= $block->getQuote()->isVirtual() ?
+                        $escaper->escapeHtml(__('Enter your billing address to get a tax estimate.')) :
+                        $escaper->escapeHtml(__('Enter your destination to get a shipping estimate.'))
+                    ?>
+                </p>
+
+                <div class="field" name="shippingAddress.country_id">
+
+                    <label class="label">
+                        <?= $escaper->escapeHtml(__('Country')) ?>
+
+                        <select class="form-select w-full"
+                                name="country_id"
+                                aria-invalid="false"
+                                @change.debounce="setCountry($event.target.value)"
+                        >
+                            <option value=""> </option>
+                            <template x-for="country in getSortedCountries()" :key="country.id">
+                                <option :value="country.id" x-text="country.name" :selected="cartData.address && country.id == cartData.address.countryId"></option>
+                            </template>
+                        </select>
+
+                    </label>
+                </div>
+
+
+                <div class="field" name="shippingAddress.region_id">
+
+                    <template x-if="hasAvailableRegions()">
+
+                        <label class="label">
+                            <?= $escaper->escapeHtml(__('State/Province')) ?>
+
+                            <select class="form-select w-full"
+                                    id="region_id"
+                                    name="region_id"
+                                    @change.debounce="setRegion($event.target.value, 'select')"
+                            >
+                                <option value="">
+                                    <?= $escaper->escapeHtml(__('Please select a region, state or province.')) ?>
+                                </option>
+                                <template x-for="region in getAvailableRegions()" :key="region.id">
+                                    <option :data-code="region.code" :value="region.id" x-text="region.name" :selected="cartData.address && region.id == cartData.address.regionId"></option>
+                                </template>
+                            </select>
+                        </label>
+                    </template>
+
+                    <template x-if="directoryData && !hasAvailableRegions()">
+
+                        <label class="label">
+                            <?= $escaper->escapeHtml(__('State/Province')) ?>
+
+                            <input class="form-input w-full"
+                                   id="region"
+                                   type="text"
+                                   name="region"
+                                   @change.debounce="setRegion($event.target.value)"
+                                   :value="cartData.address && cartData.address.region"
+                            />
+                        </label>
+                    </template>
+                </div>
+
+                <div class="field" name="shippingAddress.postcode">
+
+                    <label class="label">
+                        <?= $escaper->escapeHtml(__('Zip/Postal Code'))?>
+
+                        <input class="form-input w-full"
+                               type="text"
+                               name="postcode"
+                               @input.debounce.1000ms="setPostcode($event.target.value)"
+                               :value="cartData.address && cartData.address.postcode"
+                        />
+                    </label>
+                </div>
+
+                <template x-if="getEstimatedShippingRateCarriers().length > 0">
+                    <div
+                        class="pt-2 relative"
+                        role="radiogroup"
+                        aria-label="<?= $escaper->escapeHtmlAttr(__('Shipping Methods')) ?>"
+                    >
+                        <?= $block->getBlockHtml('block-loader') ?>
+                        <template x-for="carrier in getEstimatedShippingRateCarriers()" :key="carrier">
+                            <div>
+                                <h4 class="font-semibold" x-text="carrier"></h4>
+                                <template x-for="(rate, index) in getRatesForCarrier(carrier)" :key="index">
+                                    <label class="flex items-center px-2 gap-2 cursor-pointer">
+                                        <input class="mr-2 cursor-pointer" type="radio"
+                                               :id="'shipping_method_' + rate.method_code"
+                                               :value="rate.carrier_code + '_' + rate.method_code"
+                                               x-model="shippingMethod"
+                                               @change="updateShippingMethod()"/>
+                                        <span x-text="rate.method_title" class="break-words shrink hyphens-auto"></span>
+                                        <div class="flex flex-col justify-end ml-auto">
+                                            <?php if ($totalsOutput->displayCartShippingInclTax() || $totalsOutput->displayCartShippingBoth()): ?>
+                                                <span
+                                                    x-text="`${hyva.formatPrice(rate.price_incl_tax)}`"
+                                                    class="price-including-tax text-right"
+                                                    data-label="<?= $escaper->escapeHtmlAttr(__('Incl. Tax')) ?>"
+                                                ></span>
+                                            <?php endif; ?>
+                                            <?php if ($totalsOutput->displayCartShippingExclTax() || $totalsOutput->displayCartShippingBoth()): ?>
+                                                <span
+                                                    x-text="`${hyva.formatPrice(rate.price_excl_tax)}`"
+                                                    <?= $totalsOutput->displayCartShippingBoth() ? 'x-show="rate.price_excl_tax !== rate.price_incl_tax"' : '' ?>
+                                                    class="price-excluding-tax"
+                                                    data-label="<?= $escaper->escapehtmlAttr(__('Excl. Tax')) ?>"
+                                                ></span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </label>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<?= $block->getChildHtml() ?>

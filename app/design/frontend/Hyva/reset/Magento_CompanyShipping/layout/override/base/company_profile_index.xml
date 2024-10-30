@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+<!--            <block class="Magento\CompanyShipping\Block\Company\Profile\ShippingMethod" name="company_shipping_method"-->
+<!--                   after="company_payment_method"-->
+<!--                   ifconfig="btob/website_configuration/company_active"-->
+<!--                   template="Magento_CompanyShipping::company/management/profile/shipping-method-list.phtml"/>-->
+        </referenceContainer>
+    </body>
+</page>

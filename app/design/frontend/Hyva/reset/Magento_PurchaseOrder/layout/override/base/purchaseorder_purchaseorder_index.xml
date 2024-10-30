@@ -1,0 +1,46 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+<!--            <block class="Magento\PurchaseOrder\Block\PurchaseOrder\View"-->
+<!--                   name="purchase.order.index.view"-->
+<!--                   template="Magento_PurchaseOrder::purchaseorder/view.phtml">-->
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Grid"-->
+<!--                       name="purchase.order.index.my"-->
+<!--                       as="my-purchase-orders"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/grid.phtml">-->
+<!--                    <arguments>-->
+<!--                        <argument name="currentCustomer" xsi:type="boolean">true</argument>-->
+<!--                        <argument name="code" xsi:type="string">my-purchase-orders</argument>-->
+<!--                        <argument name="title" translate="true" xsi:type="string">My Purchase Orders</argument>-->
+<!--                        <argument name="sort_order" xsi:type="string">10</argument>-->
+<!--                        <argument name="css_class" xsi:type="string">grid-content</argument>-->
+<!--                        <argument name="grid_name" xsi:type="string">my_purchaseorder_listing</argument>-->
+<!--                    </arguments>-->
+<!--                    <uiComponent name="my_purchaseorder_listing"/>-->
+<!--                </block>-->
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Grid"-->
+<!--                       name="purchase.order.index.company"-->
+<!--                       as="company-purchase-orders"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/grid.phtml">-->
+<!--                    <arguments>-->
+<!--                        <argument name="code" xsi:type="string">company-purchase-orders</argument>-->
+<!--                        <argument name="title" translate="true" xsi:type="string">Company Purchase Orders</argument>-->
+<!--                        <argument name="sort_order" xsi:type="string">20</argument>-->
+<!--                        <argument name="css_class" xsi:type="string">grid-content</argument>-->
+<!--                        <argument name="grid_name" xsi:type="string">company_purchaseorder_listing</argument>-->
+<!--                    </arguments>-->
+<!--                    <uiComponent name="company_purchaseorder_listing"/>-->
+<!--                </block>-->
+<!--            </block>-->
+        </referenceContainer>
+    </body>
+</page>

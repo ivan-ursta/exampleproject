@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+<!--            <block class="Magento\OrderHistorySearch\Block\Filters" name="sales.order.history.filters" before="-" template="Magento_OrderHistorySearch::filters.phtml"/>-->
+<!--            <block class="Magento\Framework\View\Element\Html\Calendar" name="html_calendar" as="html_calendar" template="Magento_Theme::js/calendar.phtml"/>-->
+<!--            <referenceBlock name="show.all.orders.link" remove="true"/>-->
+        </referenceContainer>
+        <referenceContainer name="sales.order.history.extra.column.header">
+<!--            <block class="Magento\OrderHistorySearch\Block\Order\CreatedBy"-->
+<!--                   name="sales_order_createdby_header"-->
+<!--                   ifconfig="btob/website_configuration/company_active"-->
+<!--                   template="Magento_OrderHistorySearch::order/createdby/header.phtml"/>-->
+        </referenceContainer>
+        <referenceContainer name="sales.order.history.extra.container">
+<!--            <block class="Magento\OrderHistorySearch\Block\Order\CreatedBy"-->
+<!--                   name="sales_order_createdby_data"-->
+<!--                   ifconfig="btob/website_configuration/company_active"-->
+<!--                   template="Magento_OrderHistorySearch::order/createdby/data.phtml"/>-->
+        </referenceContainer>
+    </body>
+</page>

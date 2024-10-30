@@ -1,0 +1,34 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock name="purchase.order.index.view">
+<!--                <block class="Magento\PurchaseOrder\Block\PurchaseOrder\Grid"-->
+<!--                       name="purchase.order.index.approval"-->
+<!--                       as="approval-purchase-orders"-->
+<!--                       template="Magento_PurchaseOrder::purchaseorder/grid.phtml">-->
+<!--                    <arguments>-->
+<!--                        <argument name="approvalGrid" xsi:type="boolean">true</argument>-->
+<!--                        <argument name="code" xsi:type="string">approval-purchase-orders</argument>-->
+<!--                        <argument name="title" translate="true" xsi:type="string">Requires My Approval</argument>-->
+<!--                        <argument name="sort_order" xsi:type="string">30</argument>-->
+<!--                        <argument name="css_class" xsi:type="string">grid-content</argument>-->
+<!--                        <argument name="grid_name" xsi:type="string">require_my_approval_purchaseorder_listing</argument>-->
+<!--                    </arguments>-->
+<!--                    <block class="Magento\PurchaseOrderRule\Block\PurchaseOrder\Approval\Counter"-->
+<!--                           name="approval.count"-->
+<!--                           as="tab.link.label.after"-->
+<!--                           template="Magento_PurchaseOrderRule::purchaseorder/tab_requires_approval_counter.phtml" />-->
+<!--                    <uiComponent name="require_my_approval_purchaseorder_listing"/>-->
+<!--                </block>-->
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

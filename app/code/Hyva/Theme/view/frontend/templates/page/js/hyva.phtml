@@ -1,0 +1,423 @@
+<?php
+/**
+ * Hyvä Themes - https://hyva.io
+ * Copyright © Hyvä Themes 2020-present. All rights reserved.
+ * This product is licensed per Magento install
+ * See https://hyva.io/license
+ */
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\Currency;
+use Hyva\Theme\ViewModel\StoreConfig;
+use Hyva\Theme\ViewModel\ThemeLibrariesConfig;
+use Magento\Cookie\Helper\Cookie;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+/** @var ViewModelRegistry $viewModels */
+/** @var Currency $currencyViewModel */
+$currencyViewModel = $viewModels->require(Currency::class);
+$storeConfig = $viewModels->require(StoreConfig::class);
+$jsLocale = str_replace('_', '-', $storeConfig->getStoreConfig('general/locale/code'));
+$alpineVersion = $viewModels->require(ThemeLibrariesConfig::class)->getVersionIdFor('alpine') ?? 2;
+
+?>
+<script>
+    'use strict';
+    (function( hyva, undefined ) {
+
+        function lifetimeToExpires(options, defaults) {
+
+            const lifetime = options.lifetime || defaults.lifetime;
+
+            if (lifetime) {
+                const date = new Date;
+                date.setTime(date.getTime() + lifetime * 1000);
+                return date;
+            }
+
+            return null;
+        }
+
+        function generateRandomString() {
+
+            const allowedCharacters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                length = 16;
+
+            let formKey = '',
+                charactersLength = allowedCharacters.length;
+
+            for (let i = 0; i < length; i++) {
+                formKey += allowedCharacters[Math.round(Math.random() * (charactersLength - 1))]
+            }
+
+            return formKey;
+        }
+
+        const sessionCookieMarker = {noLifetime: true}
+
+        const cookieTempStorage = {};
+
+        const internalCookie = {
+            get(name) {
+                const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                return v ? v[2] : null;
+            },
+            set(name, value, days, skipSetDomain) {
+                let expires,
+                    path,
+                    domain,
+                    secure,
+                    samesite;
+
+                const defaultCookieConfig = {
+                    expires: null,
+                    path: '/',
+                    domain: null,
+                    secure: false,
+                    lifetime: null,
+                    samesite: 'lax'
+                };
+
+                const cookieConfig = window.COOKIE_CONFIG || {};
+
+                expires = days && days !== sessionCookieMarker
+                    ? lifetimeToExpires({lifetime: 24 * 60 * 60 * days, expires: null}, defaultCookieConfig)
+                    : lifetimeToExpires(window.COOKIE_CONFIG, defaultCookieConfig) || defaultCookieConfig.expires;
+
+                path = cookieConfig.path || defaultCookieConfig.path;
+                domain = !skipSetDomain && (cookieConfig.domain || defaultCookieConfig.domain);
+                secure = cookieConfig.secure || defaultCookieConfig.secure;
+                samesite = cookieConfig.samesite || defaultCookieConfig.samesite;
+
+                document.cookie = name + "=" + encodeURIComponent(value) +
+                    (expires && days !== sessionCookieMarker ? '; expires=' + expires.toGMTString() : '') +
+                    (path ? '; path=' + path : '') +
+                    (domain ? '; domain=' + domain : '') +
+                    (secure ? '; secure' : '') +
+                    (samesite ? '; samesite=' + samesite : 'lax');
+            },
+            isWebsiteAllowedToSaveCookie() {
+                const allowedCookies = this.get('<?= /* @noEscape */  Cookie::IS_USER_ALLOWED_SAVE_COOKIE ?>');
+                if (allowedCookies) {
+                    const allowedWebsites = JSON.parse(unescape(allowedCookies));
+
+                    return allowedWebsites[CURRENT_WEBSITE_ID] === 1;
+                }
+                return false;
+            },
+            getGroupByCookieName(name) {
+                const cookieConsentConfig = window.cookie_consent_config || {};
+                let group = null;
+                for (let prop in cookieConsentConfig) {
+                    if (!cookieConsentConfig.hasOwnProperty(prop)) continue;
+                    if (cookieConsentConfig[prop].includes(name)) {
+                        group = prop;
+                        break;
+                    }
+                }
+                return group;
+            },
+            isCookieAllowed(name) {
+                const cookieGroup = this.getGroupByCookieName(name);
+                return cookieGroup
+                    ? window.cookie_consent_groups[cookieGroup]
+                    : this.isWebsiteAllowedToSaveCookie();
+            },
+            saveTempStorageCookies() {
+                for (const [name, data] of Object.entries(cookieTempStorage)) {
+                    if (this.isCookieAllowed(name)) {
+                        this.set(name, data['value'], data['days'], data['skipSetDomain']);
+                        delete cookieTempStorage[name];
+                    }
+                }
+            }
+        };
+
+        hyva.getCookie = (name) => {
+            const cookieConfig = window.COOKIE_CONFIG || {};
+
+            if (cookieConfig.cookie_restriction_enabled && ! internalCookie.isCookieAllowed(name)) {
+                return cookieTempStorage[name] ? cookieTempStorage[name]['value'] : null;
+            }
+
+            return internalCookie.get(name);
+        }
+
+        hyva.setCookie = (name, value, days, skipSetDomain) => {
+            const cookieConfig = window.COOKIE_CONFIG || {};
+
+            if (cookieConfig.cookie_restriction_enabled && ! internalCookie.isCookieAllowed(name)) {
+                cookieTempStorage[name] = {value, days, skipSetDomain};
+                return;
+            }
+            return internalCookie.set(name, value, days, skipSetDomain);
+        }
+
+
+        hyva.setSessionCookie = (name, value, skipSetDomain) => {
+            return hyva.setCookie(name, value, sessionCookieMarker, skipSetDomain)
+        }
+
+        hyva.getBrowserStorage = () => {
+            const browserStorage = window.localStorage || window.sessionStorage;
+            if (!browserStorage) {
+                console.warn('Browser Storage is unavailable');
+                return false;
+            }
+            try {
+                browserStorage.setItem('storage_test', '1');
+                browserStorage.removeItem('storage_test');
+            } catch (error) {
+                console.warn('Browser Storage is not accessible', error);
+                return false;
+            }
+            return browserStorage;
+        }
+
+        hyva.postForm = (postParams) => {
+            const form = document.createElement("form");
+
+            let data = postParams.data;
+
+            if (! postParams.skipUenc && ! data.uenc) {
+                data.uenc = btoa(window.location.href);
+            }
+            form.method = "POST";
+            form.action = postParams.action;
+
+            Object.keys(postParams.data).map(key => {
+                const field = document.createElement("input");
+                field.type = 'hidden'
+                field.value = postParams.data[key];
+                field.name = key;
+                form.appendChild(field);
+            });
+
+            const form_key = document.createElement("input");
+            form_key.type = 'hidden';
+            form_key.value = hyva.getFormKey();
+            form_key.name="form_key";
+            form.appendChild(form_key);
+
+            document.body.appendChild(form);
+
+            form.submit();
+        }
+
+        hyva.getFormKey = function () {
+            let formKey = hyva.getCookie('form_key');
+
+            if (!formKey) {
+                formKey = generateRandomString();
+                hyva.setCookie('form_key', formKey);
+            }
+
+            return formKey;
+        }
+
+        hyva.formatPrice = (value, showSign, options = {}) => {
+            const formatter = new Intl.NumberFormat(
+                '<?= $escaper->escapeJs($jsLocale) ?>',
+                Object.assign({
+                    style: 'currency',
+                    currency: '<?= $escaper->escapeJs($currencyViewModel->getCurrentCurrencyCode()) ?>',
+                    signDisplay: showSign ? 'always' : 'auto'
+                }, options)
+            );
+            return (typeof Intl.NumberFormat.prototype.formatToParts === 'function') ?
+                formatter.formatToParts(value).map(({type, value}) => {
+                    switch (type) {
+                        case 'currency':
+                            return '<?= $escaper->escapeJs($currencyViewModel->getCurrentCurrencySymbol() ?: '') ?>' || value;
+                        case 'minusSign':
+                            return '- ';
+                        case 'plusSign':
+                            return '+ ';
+                        default :
+                            return value;
+                    }
+                }).reduce((string, part) => string + part) :
+                formatter.format(value);
+        }
+
+<?php
+        /**
+         * Internal string replacement function implementation, see hyva.str() for usage details.
+         *
+         * @param string str Template string with optional placeholders
+         * @param int nStart Offset for placeholders, 0 means %0 is replaced with args[0], 1 means %1 is replaced with args[0]
+         * @param array ...args Positional replacement arguments. Rest arguments support isn't at 97% yet, so Array.from(arguments).slice() is used instead.
+         */
+?>
+        const formatStr = function (str, nStart) {
+            const args = Array.from(arguments).slice(2);
+
+            return str.replace(/(%+)([0-9]+)/g, (m, p, n) => {
+                const idx = parseInt(n) - nStart;
+
+                if (args[idx] === null || args[idx] === void 0) {
+                    return m;
+                }
+                return p.length % 2
+                    ? p.slice(0, -1).replace('%%', '%') + args[idx]
+                    : p.replace('%%', '%') + n;
+            })
+        }
+
+<?php
+        /**
+         * Replace positional parameters like %1 in string with the rest argument in the matching position.
+         * The first rest argument replaces %1, the second %2 and so on.
+         *
+         * Example: hyva.str('%3 %2 %1', 'a', 'b', 'c') => "c b a"
+         *
+         * To insert a literal % symbol followed by a number, duplicate the %, for example %%2 is returned as %2.
+         */
+?>
+        hyva.str = function (string) {
+            const args = Array.from(arguments);
+            args.splice(1, 0, 1);
+
+            return formatStr.apply(undefined, args);
+        }
+
+<?php
+        /**
+         * Zero based version of hyva.str(): the first rest argument replaces %0, the second %1 and so on.
+         *
+         * Example: hyva.strf('%2 %1 %0', 'a', 'b', 'c') => "c b a"
+         *
+         * If in doubt whether to use hyva.str() or hyva.strf(), prefer hyva.str() because it is more similar to __()
+         * and it might be possible to reuse existing phrase translations with placeholders.
+         */
+?>
+        hyva.strf = function () {
+            const args = Array.from(arguments);
+            args.splice(1, 0, 0);
+
+            return formatStr.apply(undefined, args);
+        }
+
+        /**
+         * Take a html string as `content` parameter and
+         * extract an element from the DOM to replace in
+         * the current page under the same selector,
+         * defined by `targetSelector`
+         */
+        hyva.replaceDomElement = (targetSelector, content) => {
+            // Parse the content and extract the DOM node using the `targetSelector`
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, 'text/html');
+            const contentNode = doc.querySelector(targetSelector);
+
+            // Bail if content can't be found
+            if (!contentNode) {
+                return;
+            }
+
+            hyva.activateScripts(contentNode)
+
+            // Replace the old DOM node with the new content
+            document.querySelector(targetSelector).replaceWith(contentNode);
+
+            // Reload customerSectionData and display cookie-messages if present
+            window.dispatchEvent(new CustomEvent("reload-customer-section-data"));
+            hyva.initMessages();
+        }
+
+        hyva.activateScripts = (contentNode) => {
+            // Extract all the script tags from the content.
+            // Script tags won't execute when inserted into a dom-element directly,
+            // therefore we need to inject them to the head of the document.
+            const tmpScripts = contentNode.getElementsByTagName('script');
+
+            if (tmpScripts.length > 0) {
+                // Push all script tags into an array
+                // (to prevent dom manipulation while iterating over dom nodes)
+                const scripts = [];
+                for (let i = 0; i < tmpScripts.length; i++) {
+                    scripts.push(tmpScripts[i]);
+                }
+
+                // Iterate over all script tags and duplicate+inject each into the head
+                for (let i = 0; i < scripts.length; i++) {
+                    let script = document.createElement('script');
+                    script.innerHTML = scripts[i].innerHTML;
+
+                    document.head.appendChild(script);
+
+                    // Remove the original (non-executing) node from the content
+                    scripts[i].parentNode.removeChild(scripts[i]);
+                }
+            }
+            return contentNode;
+        }
+
+<?php
+        /**
+         * Return base64 encoded current URL that can be used by Magento to redirect the visitor back to the current page.
+         * The func hyva.getUenc handles additional encoding of +, / and = like \Magento\Framework\Url\Encoder::encode().
+         */
+?>
+        const replace = {['+']: '-', ['/']: '_', ['=']: ','};
+        hyva.getUenc = () => btoa(window.location.href).replace(/[+/=]/g, match => replace[match]);
+
+        let currentTrap;
+
+        const focusableElements = (rootElement) => {
+            const selector = 'button, [href], input, select, textarea, details, [tabindex]:not([tabindex="-1"]';
+            return Array.from(rootElement.querySelectorAll(selector))
+                .filter(el => {
+                    return el.style.display !== 'none'
+                        && !el.disabled
+                        && el.tabIndex !== -1
+                        && (el.offsetWidth || el.offsetHeight || el.getClientRects().length)
+                })
+        }
+
+        const focusTrap = (e) => {
+            const isTabPressed = e.key === 'Tab' || e.keyCode === 9;
+            if (!isTabPressed) return;
+
+            const focusable = focusableElements(currentTrap)
+            const firstFocusableElement = focusable[0]
+            const lastFocusableElement = focusable[focusable.length - 1]
+
+            e.shiftKey
+                ? document.activeElement === firstFocusableElement && (lastFocusableElement.focus(), e.preventDefault())
+                : document.activeElement === lastFocusableElement && (firstFocusableElement.focus(), e.preventDefault())
+        };
+
+        hyva.releaseFocus = (rootElement) => {
+            if (currentTrap && (!rootElement || rootElement === currentTrap)) {
+                currentTrap.removeEventListener('keydown', focusTrap)
+                currentTrap = null
+            }
+        }
+        hyva.trapFocus = (rootElement) => {
+            if (!rootElement) return;
+            hyva.releaseFocus()
+            currentTrap = rootElement
+            rootElement.addEventListener('keydown', focusTrap)
+            const firstElement = focusableElements(rootElement)[0]
+            firstElement && firstElement.focus()
+        }
+
+        <?php if ((int) $alpineVersion === 2): ?>
+        hyva.alpineInitialized = (fn) => {
+            const initAlpine = window.deferLoadingAlpine || ((callback) => callback())
+            window.deferLoadingAlpine = (callback) => {
+                initAlpine(callback)
+                Promise.resolve().then(() => fn())
+            }
+        }
+        <?php else: /* Alpine >= v3 */ ?>
+        hyva.alpineInitialized = (fn) => window.addEventListener('alpine:initialized', fn, {once: true})
+        <?php endif; ?>
+        window.addEventListener('user-allowed-save-cookie', () => internalCookie.saveTempStorageCookies())
+
+    }( window.hyva = window.hyva || {} ));
+</script>
