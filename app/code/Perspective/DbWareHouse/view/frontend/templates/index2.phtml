@@ -1,0 +1,20 @@
+<?php
+    $viewModel = $block->getData('view_model');
+    echo "<h1> 4. Для продуктов из заданного списка категорий вывести список складов, где имеются
+    эти продукты (количество >0), а также изображение продукта, его название, SKU и
+    стоимость </h1>";
+
+    $collection = $viewModel->getProductByCategoryList(["23", "17", "18"]);
+    
+    foreach($collection as $item)
+    {
+        $product = $viewModel->getProduct($item["id_prod"]);
+        $imageUrl = $viewModel->getProductImageUrl($item["id_prod"], "product_small_image");
+        echo "<h2>" . $product->getName() . "</h2>";
+        echo "<h3>" . $item["name_war"] . "</h3>";
+        echo "<h3>" . $item["addr_war"] . "</h3>";
+        echo "<img src='$imageUrl'>";
+        echo "<h2>" . $product->getSku() . "</h2>";
+        echo "<h2>Price: " . $product->getPrice() . "</h2>";
+    }
+?>

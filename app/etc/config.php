@@ -387,15 +387,17 @@ return [
         'Perspective_ClothingMaterial' => 0,
         'Perspective_ColorAttribute' => 0,
         'Perspective_CreateSimpleProduct' => 0,
+        'Perspective_DbWareHouse' => 1,
         'Perspective_DemoPlugin' => 0,
         'Perspective_IncreaseCurrencyRates' => 0,
         'Perspective_Modulecontact' => 0,
-        'Perspective_NovaposhtaCatalog' => 1,
-        'Perspective_NovaposhtaShipping' => 1,
+        'Perspective_NovaposhtaCatalog' => 0,
+        'Perspective_NovaposhtaShipping' => 0,
         'Perspective_OnlyXLeftModifier' => 0,
         'Perspective_PreferenceDemo' => 0,
         'Perspective_Recommendations' => 0,
         'Perspective_ShippingConditions' => 0,
+        'Perspective_StockValue' => 1,
         'Perspective_SystemConfigExample' => 0
     ]
 ];

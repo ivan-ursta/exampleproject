@@ -1,0 +1,20 @@
+<?php
+    $viewModel = $block->getData('view_model');
+
+    echo "<h1> 3.1 Получить полную коллекцию по созданной таблице </h1>";
+    $collection = $viewModel->getPostCollection();
+    foreach($collection as $item){
+        echo "<pre>";
+        print_r($item->getData());
+        echo "Ціна товарів на складі: " . $item->getProdsPrice();
+        echo "</pre>";
+    }
+
+    echo "<h1> 3.2 Получить коллекцию имен, категорий продуктов и даты их появления для указанного склада </h2>";
+    $collection = $viewModel->getCollectionByWarehouse("Warehouse 1");
+    foreach($collection as $item){
+        echo "<h2>Product Name: " . $viewModel->getProductName($item["id_prod"]) . "</h2>";
+        echo "<h3>Product Category: " . $item["id_cat"] . "</h3>";
+        echo "<h3>Stock Date: " . $item["data_prod"] . "</h3>";
+    }
+?>
