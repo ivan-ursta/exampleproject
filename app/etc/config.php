@@ -387,8 +387,9 @@ return [
         'Perspective_ClothingMaterial' => 0,
         'Perspective_ColorAttribute' => 0,
         'Perspective_CreateSimpleProduct' => 0,
-        'Perspective_DbWareHouse' => 1,
+        'Perspective_DbWareHouse' => 0,
         'Perspective_DemoPlugin' => 0,
+        'Perspective_ExampleObserver' => 1,
         'Perspective_IncreaseCurrencyRates' => 0,
         'Perspective_Modulecontact' => 0,
         'Perspective_NovaposhtaCatalog' => 0,
@@ -396,8 +397,9 @@ return [
         'Perspective_OnlyXLeftModifier' => 0,
         'Perspective_PreferenceDemo' => 0,
         'Perspective_Recommendations' => 0,
+        'Perspective_SampleEvent' => 1,
         'Perspective_ShippingConditions' => 0,
-        'Perspective_StockValue' => 1,
+        'Perspective_StockValue' => 0,
         'Perspective_SystemConfigExample' => 0
     ]
 ];
