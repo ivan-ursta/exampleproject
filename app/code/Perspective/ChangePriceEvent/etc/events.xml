@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework/Event/etc/events.xsd">
+    <event name="catalog_product_load_after">
+        <observer name="perspective_changepriceevent_adjust_product_price" instance="Perspective\ChangePriceEvent\Observer\AdjustProductPrice" />
+    </event>
+    <event name="sales_quote_collect_totals_before">
+        <observer name="perspective_changepriceevent_adjust_quote_totals" instance="Perspective\ChangePriceEvent\Observer\AdjustQuoteTotals" />
+    </event>
+    <event name="catalog_product_collection_load_after">
+        <observer name="perspective_changepriceevent_adjust_collection_prices" instance="Perspective\ChangePriceEvent\Observer\AdjustCollectionPrices" />
+    </event>
+</config>
