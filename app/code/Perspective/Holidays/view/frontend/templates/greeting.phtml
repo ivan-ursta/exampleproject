@@ -1,0 +1,10 @@
+<?php
+$message = $block->getGreetingMessage();
+$discountInfo = $block->getDiscountInfo();
+?>
+<?php if ($message && $discountInfo): ?>
+    <div class="holiday-greeting">
+        <h3 style="margin-left: 45%"><?php echo nl2br($block->escapeHtml($message)); ?></h3>
+        <h4 style="margin-left: 45%"><?php echo nl2br($block->escapeHtml($discountInfo)); ?></h4>
+    </div>
+<?php endif; ?>

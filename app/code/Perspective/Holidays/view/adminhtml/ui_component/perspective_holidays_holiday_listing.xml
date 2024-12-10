@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">perspective_holidays_holiday_listing.perspective_holidays_holiday_listing_data_source</item>
+            <item name="deps" xsi:type="string">perspective_holidays_holiday_listing.perspective_holidays_holiday_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">holiday_columns</item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/add</item>
+            </item>
+        </item>
+    </argument>
+    <!-- Define Data Source -->
+    <dataSource name="perspective_holidays_holiday_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">PerspectiveHolidaysGridDataProvider</argument>
+            <argument name="name" xsi:type="string">perspective_holidays_holiday_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">holiday_id</argument>
+            <argument name="requestFieldName" xsi:type="string">holiday_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+
+    <!-- Add Toolbar -->
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <massaction name="listing_massaction">
+            <action name="delete">
+                <settings>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                    <url path="holidays/index/massDelete"/>
+                    <confirm>
+                        <title translate="true">Delete</title>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                    </confirm>
+                </settings>
+            </action>
+            <action name="status">
+                <settings>
+                    <type>change_status</type>
+                    <label translate="true">Change Status</label>
+                    <actions class="Perspective\Holidays\Ui\Component\MassAction\Status\Options"/>
+                </settings>
+            </action>
+        </massaction>
+        <bookmark name="bookmarks"/>
+        <filters name="listing_filters"/>
+        <columnsControls name="columns_controls"/>
+    </listingToolbar>
+
+    <!-- Define Columns -->
+    <columns name="holiday_columns">
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>holiday_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="holiday_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Name</label>
+            </settings>
+        </column>
+        <column name="greeting_text">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Text</label>
+            </settings>
+        </column>
+        <column name="period_start">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Start date</label>
+            </settings>
+        </column>
+        <column name="exact_date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Exact date</label>
+            </settings>
+        </column>
+        <column name="period_end">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">End date</label>
+            </settings>
+        </column>
+        <column name="is_active">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="label" xsi:type="string">Active</item>
+                        <item name="value" xsi:type="string">1</item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="label" xsi:type="string">Inactive</item>
+                        <item name="value" xsi:type="string">0</item>
+                    </item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="store_id" class="Magento\Ui\Component\Listing\Columns\Column">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Perspective\Holidays\Ui\Component\Listing\Column\Store\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Store View</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="sortable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+
+        <actionsColumn name="actions" class="Perspective\Holidays\Ui\Component\Listing\Column\HolidayActions">
+            <settings>
+                <indexField>holiday_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+
+    <!-- Add Export Button -->
+    <exportButton name="export_button"/>
+</listing>

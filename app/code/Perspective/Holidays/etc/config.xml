@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/config.xsd">
+    <default>
+        <holiday_settings>
+            <general>
+                <enabled>0</enabled>
+                <discount_percentage>0</discount_percentage>
+                <allowed_customer_group></allowed_customer_group>
+            </general>
+        </holiday_settings>
+    </default>
+</config>

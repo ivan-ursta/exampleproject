@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">holiday_form.holiday_form_data_source</item>
+            <item name="deps" xsi:type="string">holiday_form.holiday_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">holiday_form</item>
+        </item>
+        <item name="spinner" xsi:type="string">general</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="string">Perspective\Holidays\Block\Adminhtml\Index\Edit\BackButton</item>
+            <item name="delete" xsi:type="string">Perspective\Holidays\Block\Adminhtml\Index\Edit\DeleteButton</item>
+            <item name="reset" xsi:type="string">Perspective\Holidays\Block\Adminhtml\Index\Edit\ResetButton</item>
+            <item name="save" xsi:type="string">Perspective\Holidays\Block\Adminhtml\Index\Edit\SaveButton</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <dataSource name="holiday_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Perspective\Holidays\Model\Holiday\DataProvider</argument>
+            <argument name="name" xsi:type="string">holiday_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">holiday_id</argument>
+            <argument name="requestFieldName" xsi:type="string">holiday_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" xsi:type="url" path="holidays/index/save"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="general_information">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="collapsible" xsi:type="boolean">false</item>
+                <item name="label" xsi:type="string" translate="true">General Information</item>
+                <item name="sortOrder" xsi:type="number">10</item>
+            </item>
+        </argument>
+
+        <field name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">name</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="period_start">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Start Date</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="dataScope" xsi:type="string">period_start</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="exact_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Exact Date</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="dataScope" xsi:type="string">exact_date</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="period_end">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">End Date</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="dataScope" xsi:type="string">period_end</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="greeting_text">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Text</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="dataScope" xsi:type="string">greeting_text</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="is_active">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">boolean</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="formElement" xsi:type="string">checkbox</item>
+                    <item name="prefer" xsi:type="string">toggle</item>
+                    <item name="valueMap" xsi:type="array">
+                        <item name="true" xsi:type="string">1</item>
+                        <item name="false" xsi:type="string">0</item>
+                    </item>
+                    <item name="dataScope" xsi:type="string">is_active</item>
+                    <item name="sortOrder" xsi:type="number">60</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="store_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Perspective\Holidays\Ui\Component\Listing\Column\Store\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Store View</item>
+                    <item name="dataScope" xsi:type="string">store_id</item>
+                    <item name="dataType" xsi:type="string">int</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">holiday</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="discount_percentage">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Discount Percentage (%)</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="dataScope" xsi:type="string">discount_percentage</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-greater-than-zero" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="sortOrder" xsi:type="number">80</item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="allowed_customer_group" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Customer\Model\Config\Source\Group</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Allowed Customer Groups</item>
+                    <item name="dataScope" xsi:type="string">allowed_customer_group</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">multiselect</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="number">90</item>
+                </item>
+            </argument>
+        </field>
+
+    </fieldset>
+</form>

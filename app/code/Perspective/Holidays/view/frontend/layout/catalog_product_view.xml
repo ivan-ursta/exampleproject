@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="page.top">
+            <block class="Perspective\Holidays\Block\Greeting" name="holiday_greeting" template="Perspective_Holidays::greeting.phtml"/>
+        </referenceContainer>
+
+        <referenceBlock name="product.info.main">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="product.new.price"
+                   template="Perspective_Holidays::product/old_price.phtml"
+                   after="product.info.price">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Perspective\Holidays\ViewModel\HolidayView</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

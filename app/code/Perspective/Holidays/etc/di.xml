@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- For Holiday Grid -->
+    <virtualType name="PerspectiveHolidaysGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object">Perspective\Holidays\Model\ResourceModel\Holiday\Grid\Collection</argument>
+            <argument name="filterPool" xsi:type="object">PerspectiveHolidaysGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="PerspectiveHolidaysGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Perspective\Holidays\Model\ResourceModel\Holiday\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">perspective_holidays</argument>
+            <argument name="resourceModel" xsi:type="string">Perspective\Holidays\Model\ResourceModel\Holiday</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="perspective_holidays_holiday_listing_data_source" xsi:type="string">Perspective\Holidays\Model\ResourceModel\Holiday\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="DataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="resourceModel" xsi:type="string">
+                Perspective\Holidays\Model\ResourceModel\Holiday\Collection
+            </argument>
+            <argument name="mainTable" xsi:type="string">perspective_holidays</argument>
+        </arguments>
+    </virtualType>
+    <type name="Perspective\Holidays\Ui\Component\MassAction\Status\Options">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="urlPath" xsi:type="string">*/*/massStatus</item>
+                <item name="paramName" xsi:type="string">status</item>
+                <item name="confirm" xsi:type="array">
+                    <item name="title" xsi:type="string" translatable="true">Change Status</item>
+                    <item name="message" xsi:type="string" translatable="true">Are you sure you want to update selected items status?</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

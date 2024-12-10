@@ -1,0 +1,17 @@
+<?php
+/** @var $viewModel \Perspective\Holidays\ViewModel\HolidayView */
+$viewModel = $block->getData('view_model');
+
+// Get the prices
+
+$hasSpecialPrice = $viewModel->hasSpecialPrice();
+
+if ($hasSpecialPrice && $viewModel->isHolidayProduct()):
+    $oldPrice = $viewModel->getOldPrice();
+?>
+
+<div class="product-pricing">
+    <h3 class="special-price"><?= __('Old Price:') ?> <h3><?= $oldPrice ?></h3></h3>
+</div>
+
+<?php endif; ?>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="holiday_tab" translate="label" sortOrder="500">
+            <label>Perspective Holiday</label>
+        </tab>
+        <section id="holiday_settings" translate="label" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Holiday Module Settings</label>
+            <tab>holiday_tab</tab>
+            <resource>Magento_Config::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable Holiday Discount Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

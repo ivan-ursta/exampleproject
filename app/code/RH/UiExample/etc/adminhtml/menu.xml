@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="RH_UiExample::view" title="RH Blog" module="RH_UiExample" sortOrder="50" resource="RH_UiExample::view"/>
+        <add id="RH_UiExample::menu" title="Manage Grid" module="RH_UiExample" sortOrder="20" parent="RH_UiExample::view" action="uiexample/index/index" resource="RH_UiExample::menu"/>
+    </menu>
+</config>
