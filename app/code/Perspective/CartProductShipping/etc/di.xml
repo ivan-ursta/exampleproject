@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Shipping\Model\Shipping">
+        <arguments>
+            <argument name="carriers" xsi:type="array">
+                <item name="cartproductshipping" xsi:type="object">Perspective\CartProductShipping\Model\Carrier\CartProductShipping</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <cartproductshipping>
+                <active>0</active>
+                <title>Cart Product Shipping</title>
+                <name>Cart-Based Discounted Shipping</name>
+                <base_cost>10</base_cost>
+                <sallowspecific>0</sallowspecific>
+                <sort_order>10</sort_order>
+                <model>Perspective\CartProductShipping\Model\Carrier\CartProductShipping</model>
+            </cartproductshipping>
+        </carriers>
+    </default>
+</config>
