@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Payment Method plugin -->
+    <type name="Magento\Payment\Model\MethodList">
+        <plugin name="wholesale_payment_filter"
+                type="Perspective\WholesaleRestrictions\Plugin\PaymentMethodFilter"
+                sortOrder="100"/>
+    </type>
+
+    <preference for="Magento\Quote\Model\Quote\Address\RateCollectorInterface" type="Perspective\WholesaleRestrictions\Model\Shipping" />
+</config>

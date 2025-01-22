@@ -11,6 +11,8 @@ use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Psr\Log\LoggerInterface;
+use Magento\Customer\Model\Session;
+use Magento\Customer\Api\GroupRepositoryInterface;
 
 class CartProductShipping extends AbstractCarrier implements CarrierInterface
 {
@@ -19,16 +21,24 @@ class CartProductShipping extends AbstractCarrier implements CarrierInterface
     protected $_rateResultFactory;
     protected $_rateMethodFactory;
 
+    protected $customerSession;
+
+    protected $groupRepository;
+
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         ErrorFactory $rateErrorFactory,
         LoggerInterface $logger,
         ResultFactory $rateResultFactory,
         MethodFactory $rateMethodFactory,
+        Session $customerSession,
+        GroupRepositoryInterface $groupRepository,
         array $data = []
     ) {
         $this->_rateResultFactory = $rateResultFactory;
         $this->_rateMethodFactory = $rateMethodFactory;
+        $this->customerSession = $customerSession;
+        $this->groupRepository = $groupRepository;
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 
@@ -38,10 +48,27 @@ class CartProductShipping extends AbstractCarrier implements CarrierInterface
             return false;
         }
 
+        $currentCustomerGroupId = (int)$this->customerSession->getCustomerGroupId();
+
+        // If the user is not logged in, group ID might be 0 for "NOT LOGGED IN"
+        if (!$currentCustomerGroupId) {
+            return false;
+        }
+
+        try {
+            $group = $this->groupRepository->getById($currentCustomerGroupId);
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            return false;
+        }
+
+        if ($group->getCode() !== 'Pensioner') {
+            return false;
+        }
+
         // Get base cost from config
         $baseCost = (float)$this->getConfigData('base_cost');
         if ($baseCost <= 0) {
-            $baseCost = 15.00; // fallback if not set
+            $baseCost = 2.00; // fallback if not set
         }
 
         // Count physical items in the cart

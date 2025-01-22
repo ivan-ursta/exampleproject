@@ -383,7 +383,9 @@ return [
         'PayPal_BraintreeGiftWrapping' => 1,
         'PayPal_BraintreeGraphQl' => 1,
         'Perspective_AfterSku' => 0,
-        'Perspective_CartProductShipping' => 1,
+        'Perspective_AutoRefreshCache' => 1,
+        'Perspective_CartProductShipping' => 0,
+        'Perspective_CartProductShippingMinimumPrice' => 0,
         'Perspective_ChangePriceEvent' => 0,
         'Perspective_ChangeProductPrice' => 0,
         'Perspective_ClothingMaterial' => 0,
@@ -391,11 +393,13 @@ return [
         'Perspective_CreateSimpleProduct' => 0,
         'Perspective_CustomShipping' => 0,
         'Perspective_DbWareHouse' => 0,
+        'Perspective_DemoCron' => 1,
         'Perspective_DemoPlugin' => 0,
         'Perspective_ExampleObserver' => 0,
         'Perspective_Holidays' => 0,
         'Perspective_IncreaseCurrencyRates' => 0,
         'Perspective_Modulecontact' => 0,
+        'Perspective_MyPay' => 0,
         'Perspective_NovaposhtaCatalog' => 0,
         'Perspective_NovaposhtaShipping' => 0,
         'Perspective_OnlyXLeftModifier' => 0,
@@ -405,6 +409,7 @@ return [
         'Perspective_ShippingConditions' => 0,
         'Perspective_StockValue' => 0,
         'Perspective_SystemConfigExample' => 0,
+        'Perspective_WholesaleRestrictions' => 0,
         'RH_UiExample' => 0
     ]
 ];

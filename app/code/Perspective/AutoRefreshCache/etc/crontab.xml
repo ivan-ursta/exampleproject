@@ -1,0 +1,7 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="perspective_autorefreshcache_cron" instance="Perspective\AutoRefreshCache\Model\Cron" method="myCronFunction">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+    </group>
+</config>

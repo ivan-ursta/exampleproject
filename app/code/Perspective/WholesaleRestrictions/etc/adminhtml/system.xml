@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+
+    <system>
+        <section id="sales" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="wholesale_restrictions" translate="label" type="text" sortOrder="10000"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Wholesale Restrictions</label>
+
+                <!-- LARGE WHOLESALE CONFIGS -->
+                <field id="large_wholesale_amount_threshold"
+                       translate="label"
+                       type="text"
+                       sortOrder="20"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Order Total Threshold (Large Wholesale)</label>
+                    <validate>validate-number</validate>
+                    <tooltip>If order total exceeds this, only free shipping + one payment method.</tooltip>
+                </field>
+
+                <!-- Now a SELECT for Payment Method (Large Wholesale) -->
+                <field id="large_wholesale_payment_method"
+                       translate="label"
+                       type="select"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Payment Method Code (Large Wholesale)</label>
+                    <tooltip>Select which payment method is allowed above threshold</tooltip>
+                    <source_model>Magento\Payment\Model\Config\Source\Allmethods</source_model>
+                </field>
+
+                <!-- WHOLESALE CONFIGS -->
+                <field id="wholesale_qty_threshold"
+                       translate="label"
+                       type="text"
+                       sortOrder="50"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Product Quantity Threshold (Wholesale)</label>
+                    <validate>validate-number</validate>
+                    <tooltip>If total qty > this, force one shipping + one payment.</tooltip>
+                </field>
+
+                <!-- A SELECT for Forced Shipping (Wholesale) -->
+                <field id="wholesale_forced_shipping"
+                       translate="label"
+                       type="select"
+                       sortOrder="60"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Forced Shipping Method Code (Wholesale)</label>
+                    <tooltip>Choose the shipping method to force above threshold</tooltip>
+                    <source_model>Magento\Shipping\Model\Config\Source\Allmethods</source_model>
+                </field>
+
+                <!-- A SELECT for Forced Payment (Wholesale) -->
+                <field id="wholesale_forced_payment"
+                       translate="label"
+                       type="select"
+                       sortOrder="70"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Forced Payment Method Code (Wholesale)</label>
+                    <tooltip>Choose the payment method to force above threshold</tooltip>
+                    <source_model>Magento\Payment\Model\Config\Source\Allmethods</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
