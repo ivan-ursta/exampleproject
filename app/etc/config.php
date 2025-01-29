@@ -404,6 +404,7 @@ return [
         'Perspective_NovaposhtaCatalog' => 0,
         'Perspective_NovaposhtaShipping' => 0,
         'Perspective_OnlyXLeftModifier' => 0,
+        'Perspective_PreOpenCode' => 1,
         'Perspective_PreferenceDemo' => 0,
         'Perspective_Recommendations' => 0,
         'Perspective_SampleEvent' => 0,
