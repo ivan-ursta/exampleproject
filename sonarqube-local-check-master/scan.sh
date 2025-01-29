@@ -7,7 +7,7 @@ PROJECT_VERSION=$(date +'%Y.%m.%d.%H%M%S')
 
 docker run \
     --rm \
-    --network=sonarqube-local-check_sonar_network \
+    --network=sonarqube-local-check-master_sonar_network \
     -v ${YOUR_REPO}:/usr/src \
     -v ${YOUR_CACHE_DIR}:/opt/sonar-scanner/.sonar/cache \
     -e SONAR_HOST_URL="http://${SONARQUBE_URL}" \

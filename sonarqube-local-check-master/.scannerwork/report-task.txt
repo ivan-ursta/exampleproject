@@ -1,0 +1,6 @@
+projectKey=exampleproject
+serverUrl=http://sonarqube:9000
+serverVersion=25.1.0.102122
+dashboardUrl=http://sonarqube:9000/dashboard?id=exampleproject
+ceTaskId=7189d5ab-a246-4bad-842d-6b981f514da3
+ceTaskUrl=http://sonarqube:9000/api/ce/task?id=7189d5ab-a246-4bad-842d-6b981f514da3

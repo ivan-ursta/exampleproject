@@ -396,6 +396,7 @@ return [
         'Perspective_DemoCron' => 1,
         'Perspective_DemoPlugin' => 0,
         'Perspective_ExampleObserver' => 0,
+        'Perspective_Extension' => 1,
         'Perspective_Holidays' => 0,
         'Perspective_IncreaseCurrencyRates' => 0,
         'Perspective_Modulecontact' => 0,
