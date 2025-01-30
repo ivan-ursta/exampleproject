@@ -384,6 +384,7 @@ return [
         'PayPal_BraintreeGraphQl' => 1,
         'Perspective_AfterSku' => 0,
         'Perspective_AutoRefreshCache' => 1,
+        'Perspective_AutofillCheckout' => 1,
         'Perspective_CartProductShipping' => 0,
         'Perspective_CartProductShippingMinimumPrice' => 0,
         'Perspective_ChangePriceEvent' => 0,
