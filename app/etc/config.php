@@ -391,6 +391,7 @@ return [
         'Perspective_ClothingMaterial' => 0,
         'Perspective_ColorAttribute' => 0,
         'Perspective_CreateSimpleProduct' => 0,
+        'Perspective_CustomCheckoutStep' => 1,
         'Perspective_CustomShipping' => 0,
         'Perspective_DbWareHouse' => 0,
         'Perspective_DemoCron' => 1,
