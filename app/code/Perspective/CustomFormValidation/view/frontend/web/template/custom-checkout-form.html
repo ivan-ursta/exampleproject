@@ -1,0 +1,15 @@
+<div>
+    <form class="form">
+        <fieldset class="fieldset">
+            <legend data-bind="i18n: 'My Custom Form'"></legend>
+
+            <!-- ko foreach: getRegion('myCustomFormFields') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+
+            <button type="button" data-bind="click: onSubmit" class="action">
+                <span data-bind="i18n: 'Submit'"></span>
+            </button>
+        </fieldset>
+    </form>
+</div>
