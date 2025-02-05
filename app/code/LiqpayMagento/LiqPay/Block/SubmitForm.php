@@ -61,6 +61,10 @@ class SubmitForm extends Template
 
     protected function _toHtml()
     {
+        $url = $this->getUrl();
+//        $checkoutUrl = $url . 'checkout/onepage/success/';
+        $callbackUrl = $url . 'rest/V1/liqpay/callback';
+
         $order = $this->getOrder();
         $html = $this->_liqPay->cnb_form(array(
             'action' => 'pay',
@@ -68,7 +72,10 @@ class SubmitForm extends Template
             'currency' => $order->getOrderCurrencyCode(),
             'description' => $this->_helper->getLiqPayDescription($order),
             'order_id' => $order->getIncrementId(),
+            'result_url' => $callbackUrl,
+            'server_url' => $url . 'liqpay/callback/index'
         ));
+
         return $html;
     }
 }
