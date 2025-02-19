@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/system_file.xsd">
+    <system>
+        <section id="geoip" translate="label" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>GeoIP Settings</label>
+            <tab>general</tab>
+            <resource>Perspective_NewGeoLocation::config</resource>
+            <group id="api" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>API Settings</label>
+                <field id="ipstack_key" translate="label" type="obscure" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>IPStack API Key</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="geodb_endpoint" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>GeoDB Endpoint</label>
+                    <validate>required-entry</validate>
+                    <comment>Example: https://wft-geo-db.p.rapidapi.com/v1/geo/cities</comment>
+                </field>
+                <field id="geodb_key" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>GeoDB API Key</label>
+                    <validate>required-entry</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
