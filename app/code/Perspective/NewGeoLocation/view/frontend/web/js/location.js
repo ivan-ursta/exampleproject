@@ -7,24 +7,46 @@ define([
     return {
         init: function() {
             var self = this;
-            // Open modal automatically if no city is selected
-            if (!$.cookie('selected_city')) {
-                self.openModal();
+            // On page load, if no city is saved, try to auto-detect it.
+            var savedCity = $.cookie('selected_city');
+            if (!savedCity) {
+                self.detectCity();
+            } else {
+                $('#location-city').text(savedCity);
             }
+            // When the header (location-menu) is clicked, open the modal for manual selection.
             $('#location-menu').on('click', function() {
                 self.openModal();
             });
-            $('#choose-another').on('click', function(e) {
-                e.preventDefault();
-                // Load city list if not already loaded
-                self.loadCityList();
-                $('.city-dropdown').show();
-            });
+            // When a city is selected from the dropdown, update cookie and header.
             $('#city-select').on('change', function() {
                 var selectedCity = $(this).val();
-                $.cookie('selected_city', selectedCity, { expires: 30, path: '/' });
-                $('#location-city').text(selectedCity);
-                $('#location-modal').modal('closeModal');
+                if (selectedCity) {
+                    $.cookie('selected_city', selectedCity, { expires: 30, path: '/' });
+                    $('#location-city').text(selectedCity);
+                    $('#location-modal').modal('closeModal');
+                }
+            });
+        },
+        detectCity: function() {
+            var self = this;
+            $.ajax({
+                url: '/location/index/getcity',
+                type: 'GET',
+                dataType: 'json',
+                timeout: 5000
+            }).done(function(response) {
+                var city = response.city;
+                if (city) {
+                    // Save detected city and update header.
+                    $.cookie('selected_city', city, { expires: 30, path: '/' });
+                    $('#location-city').text(city);
+                } else {
+                    // If detection fails, nothing is saved; user can manually select later.
+                    console.log('City detection returned empty.');
+                }
+            }).fail(function() {
+                console.log('City detection AJAX request failed.');
             });
         },
         openModal: function() {
@@ -33,47 +55,28 @@ define([
                 title: 'Choose your city',
                 buttons: []
             }).modal('openModal');
-            // AJAX call to get detected city via our GetCity controller
-            $.ajax({
-                url: '/location/index/getcity',
-                type: 'GET',
-                dataType: 'json'
-            }).done(function(response) {
-                var city = response.city;
-                if (city) {
-                    $('#detected-city').text(city);
-                } else {
-                    $('#detected-city').text('Unable to determine city');
-                    $('#city-error').text('Automatic detection failed. Please choose your city from the list.').show();
-                    self.loadCityList();
-                    $('.city-dropdown').show();
-                }
-            }).fail(function() {
-                $('#detected-city').text('Request error');
-                $('#city-error').text('Error determining city. Please choose manually.').show();
-                self.loadCityList();
-                $('.city-dropdown').show();
-            });
+            // Load the city list into the dropdown if not already loaded.
+            self.loadCityList();
         },
         loadCityList: function() {
-            // If the dropdown is already populated, do not fetch again.
-            if ($('#city-select option').length > 1) {
+            var $select = $('#city-select');
+            // If the dropdown already has more than one option, do not reload.
+            if ($select.find('option').length > 1) {
                 return;
             }
-            // AJAX call to get the list of cities via our GetCities controller
             $.ajax({
                 url: '/location/index/getcities',
                 type: 'GET',
-                dataType: 'json'
+                data: { limit: 50 }, // Request up to 50 cities.
+                dataType: 'json',
+                timeout: 5000
             }).done(function(response) {
                 var cities = response.cities;
-                var $select = $('#city-select');
                 $select.empty();
-                $select.append('<option value="">' + 'Please select' + '</option>');
-                // Populate the select with city names. Here we assume each city data object has a "name" field.
+
+                // Populate the select element with city names (assuming each city object has a "name" property).
                 $.each(cities, function(index, city) {
-                    // Adjust property name if API returns a different structure
-                    if(city.name) {
+                    if (city.name) {
                         $select.append('<option value="' + city.name + '">' + city.name + '</option>');
                     }
                 });

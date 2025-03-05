@@ -1,5 +1,5 @@
 <?php
-// Retrieve the selected city from cookie, or show default text.
+// Retrieve the selected city from cookie or display default text.
 $city = $block->getCookie('selected_city') ?: __('Your city');
 ?>
 <div id="location-menu" style="cursor:pointer;">
@@ -7,19 +7,14 @@ $city = $block->getCookie('selected_city') ?: __('Your city');
     <span id="location-city"><?= $city ?></span>
 </div>
 
-<!-- Modal window for city selection -->
+<!-- Modal window that displays the list of cities -->
 <div id="location-modal" style="display:none;">
     <div class="modal-content">
-        <h2>Choose your city</h2>
-        <p>Detected city: <span id="detected-city"></span></p>
-        <p><a href="#" id="choose-another">Choose another</a></p>
-        <!-- Dropdown for selecting a city will be populated dynamically -->
-        <div class="city-dropdown" style="display:none;">
-            <select id="city-select">
-                <option value="">{{Please select}}</option>
+        <h2><?php echo __('Choose your city'); ?></h2>
+        <div class="city-dropdown">
+            <select id="city-select" size="10" style="height: auto !important; max-height: 150px;">
             </select>
         </div>
-        <!-- Error message block -->
         <div id="city-error" style="display:none;color:red;"></div>
     </div>
 </div>
