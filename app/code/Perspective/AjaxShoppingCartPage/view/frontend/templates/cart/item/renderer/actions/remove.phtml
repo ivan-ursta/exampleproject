@@ -1,0 +1,10 @@
+<?php /** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+$_item = $block->getItem(); ?>
+<a href="#"
+   title="<?= $block->escapeHtml(__('Remove item')) ?>"
+   class="action action-delete"
+   data-item_id="<?= $_item->getId() ?>"'>
+<span>
+        <?= $block->escapeHtml(__('Remove item')) ?>
+    </span>
+</a>

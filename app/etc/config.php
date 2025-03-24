@@ -384,6 +384,7 @@ return [
         'PayPal_BraintreeGiftWrapping' => 1,
         'PayPal_BraintreeGraphQl' => 1,
         'Perspective_AfterSku' => 0,
+        'Perspective_AjaxShoppingCartPage' => 1,
         'Perspective_AutoRefreshCache' => 0,
         'Perspective_AutofillCheckout' => 0,
         'Perspective_CartProductShipping' => 0,
